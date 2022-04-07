@@ -20,16 +20,11 @@ public class HeroesOfMightButton extends Button{
     public HeroesOfMightButton(String text){
         setText(text);
         setButtonFont();
-
-
         setPrefWidth(190);
         setPrefHeight(49);
         setStyle(BUTTON_FREE_STYLE);
         initializeButtonListeners();
-
     }
-
-
 
     private void setButtonFont(){
         try{

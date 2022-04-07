@@ -1,13 +1,12 @@
 package main.kotprog;
 
-import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import view.ViewManager;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Application extends javafx.application.Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
