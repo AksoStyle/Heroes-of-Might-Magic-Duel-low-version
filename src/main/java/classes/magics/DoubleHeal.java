@@ -1,16 +1,17 @@
 package classes.magics;
 
-import classes.magics.Magic;
 
-public class VillamCsapas extends Magic {
+import classes.Units.Unit;
+
+public class DoubleHeal extends Magic{
     private final int ar;
     private final int mannakoltseg;
-    private final String hatas; // "30xsebzes1";
+    private final String hatas;
 
-    public VillamCsapas() {
-        this.ar = 60;
-        this.mannakoltseg = 5;
-        this.hatas = "30xsebzes1";
+    public DoubleHeal(){
+        this.ar = 200;
+        this.mannakoltseg = 20;
+        this.hatas = "Megnöveli egy unit életerejét az életerejének kétszeresével";
     }
 
     @Override
@@ -28,5 +29,7 @@ public class VillamCsapas extends Magic {
         return hatas;
     }
 
+    public void healelUnitot(Unit egység){
 
+    }
 }

@@ -75,14 +75,7 @@ public class Map {
         }
         Image backgroundImage = new Image("grass.png",true);
         GridPane grid = createGrid(switches);
-
-
         StackPane root = new StackPane(grid);
-
-
-
-
-
         Scene scene = new Scene(root, 1200, 800);
         scene.getStylesheets().add("grid-with-borders.css");
         root.setBackground(new Background(new BackgroundImage(backgroundImage,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));

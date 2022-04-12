@@ -1,14 +1,14 @@
 package classes.magics;
 
-public class Tuzlabda extends Magic{
+public class Bonus extends Magic{
     private final int ar;
     private final int mannakoltseg;
-    private final String hatas;//"3x3_20sebzes";
+    private final String hatas; //"Megnövel minden traitet 2-vel.";
 
-    public Tuzlabda() {
-        this.ar = 120;
-        this.mannakoltseg = 9;
-        this.hatas = "3x3_20sebzes";
+    public Bonus(){
+        this.ar = 200;
+        this.mannakoltseg = 200;
+        this.hatas = "Megnövel minden traitet 2-vel.";
     }
 
     @Override
@@ -25,4 +25,5 @@ public class Tuzlabda extends Magic{
     public String getHatas() {
         return hatas;
     }
+
 }

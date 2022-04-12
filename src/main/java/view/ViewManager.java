@@ -1,5 +1,6 @@
 package view;
 
+import classes.Hero;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,7 +9,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,14 +17,12 @@ import javafx.stage.Stage;
 import main.kotprog.Globals;
 import main.kotprog.Map;
 import model.HeroesOfMightButton;
+import model.SpecButton;
 
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 
 public class ViewManager {
     private static final int HEIGHT = 800;
@@ -112,11 +110,204 @@ public class ViewManager {
                 });
 
                 // Labels for the game prepreapare menu
+                // Gold show
+                Label GoldLabel = new Label("Arany:");
+                Label GoldAmount = new Label(String.valueOf(Globals.GoldAmount));
+                GoldLabel.setLayoutX(50);
+                GoldLabel.setLayoutY(100);
+                GoldLabel.setFont(new Font("Cardinal", 25));
+
+                GoldAmount.setLayoutX(230);
+                GoldAmount.setLayoutY(100);
+                GoldAmount.setFont(new Font("Cardinal", 25));
+                //Specifications of the Hero
+                int Labely = 620;
+                Label TamadasLabel = new Label("Támadás:");
+                TamadasLabel.setLayoutX(300);
+                TamadasLabel.setLayoutY(Labely);
+                TamadasLabel.setFont(new Font("Cardinal",20));
+                Label TamadasLabelAMount = new Label("1");
+                TamadasLabelAMount.setLayoutX(390);
+                TamadasLabelAMount.setLayoutY(Labely);
+                TamadasLabelAMount.setFont(new Font("Cardinal", 20));
+                SpecButton TamadasButtonIncrease = new SpecButton("+");
+                TamadasButtonIncrease.setLayoutX(330);
+                TamadasButtonIncrease.setLayoutY(Labely + 40);
+
+                TamadasButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofTamadas || (Integer.parseInt(TamadasLabelAMount.getText()) == 10)){
+
+                        }
+                        else{
+                            int gvalue = Integer.parseInt(GoldAmount.getText());
+                            GoldAmount.setText("" + (gvalue - Globals.priceofTamadas) + "");
+                            int TamadasValue = Integer.parseInt(TamadasLabelAMount.getText());
+                            TamadasLabelAMount.setText("" + (TamadasValue+1)+ "");
+                            Globals.priceofTamadas = (int) (Math.ceil(Globals.priceofTamadas *0.1) + Globals.priceofTamadas);
+                            System.out.println("Támadás ára:" + Globals.priceofTamadas);
+
+                        }
+                    }
+                });
+                //Tamadas End ---------------->
+
+                Label VedekezesLabel = new Label("Védekezés:");
+                VedekezesLabel.setLayoutX(450);
+                VedekezesLabel.setLayoutY(Labely);
+                VedekezesLabel.setFont(new Font("Cardinal",20));
+                Label VedekezesLabelAmount = new Label("1");
+                VedekezesLabelAmount.setLayoutX(560);
+                VedekezesLabelAmount.setLayoutY(Labely);
+                VedekezesLabelAmount.setFont(new Font("Cardinal", 20));
+                SpecButton VedekezesButtonIncrease = new SpecButton("+");
+                VedekezesButtonIncrease.setLayoutX(480);
+                VedekezesButtonIncrease.setLayoutY(Labely + 40);
+                VedekezesButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofVedekezes || (Integer.parseInt(VedekezesLabelAmount.getText()) == 10)){
+                        }
+                        else{
+                            int gvalue = Integer.parseInt(GoldAmount.getText());
+                            GoldAmount.setText("" + (gvalue - Globals.priceofVedekezes) + "");
+                            int VedekezesValue = Integer.parseInt(VedekezesLabelAmount.getText());
+                            VedekezesLabelAmount.setText("" + (VedekezesValue+1)+ "");
+                            Globals.priceofVedekezes = (int) (Math.ceil(Globals.priceofVedekezes *0.1) + Globals.priceofVedekezes);
+                            System.out.println("Védekezés ára:" + Globals.priceofVedekezes);
+                        }
+                    }
+                });
+                //Vedekezes End ----------------->
+
+                Label VarazseroLabel = new Label("Varázserő:");
+                VarazseroLabel.setLayoutX(600);
+                VarazseroLabel.setLayoutY(Labely);
+                VarazseroLabel.setFont(new Font("Cardinal",20));
+                Label VarazseroLabelAmount = new Label("1");
+                VarazseroLabelAmount.setLayoutX(700);
+                VarazseroLabelAmount.setLayoutY(Labely);
+                VarazseroLabelAmount.setFont(new Font("Cardinal", 20));
+                SpecButton VarazseroButtonIncrease = new SpecButton("+");
+                VarazseroButtonIncrease.setLayoutX(630);
+                VarazseroButtonIncrease.setLayoutY(Labely + 40);
+                VarazseroButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofVarazsero || (Integer.parseInt(VarazseroLabelAmount.getText()) == 10)){
+                        }
+                        else{
+                            int gvalue = Integer.parseInt(GoldAmount.getText());
+                            GoldAmount.setText("" + (gvalue - Globals.priceofVarazsero) + "");
+                            int VarazseroValue = Integer.parseInt(VarazseroLabelAmount.getText());
+                            VarazseroLabelAmount.setText("" + (VarazseroValue+1)+ "");
+                            Globals.priceofVarazsero = (int) (Math.ceil(Globals.priceofVarazsero *0.1) + Globals.priceofVarazsero);
+                            System.out.println("Varázserő ára:" + Globals.priceofVarazsero);
+                        }
+                    }
+                });
+                //Varazsero End ---------------------------->
+
+                Label TudasLabel = new Label("Tudás:");
+                TudasLabel.setLayoutX(750);
+                TudasLabel.setLayoutY(Labely);
+                TudasLabel.setFont(new Font("Cardinal",20));
+                Label TudasLabelAmount = new Label("1");
+                TudasLabelAmount.setLayoutX(830);
+                TudasLabelAmount.setLayoutY(Labely);
+                TudasLabelAmount.setFont(new Font("Cardinal", 20));
+                SpecButton TudasButtonIncrease = new SpecButton("+");
+                TudasButtonIncrease.setLayoutX(780);
+                TudasButtonIncrease.setLayoutY(Labely + 40);
+                TudasButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofTudas || (Integer.parseInt(TudasLabelAmount.getText()) == 10)){
+
+                        }
+                        else{
+                            int gvalue = Integer.parseInt(GoldAmount.getText());
+                            GoldAmount.setText("" + (gvalue - Globals.priceofTudas) + "");
+                            int TudasValue = Integer.parseInt(TudasLabelAmount.getText());
+                            TudasLabelAmount.setText("" + (TudasValue+1)+ "");
+                            Globals.priceofTudas = (int) (Math.ceil(Globals.priceofTudas *0.1) + Globals.priceofTudas);
+                            System.out.println("Varázserő ára:" + Globals.priceofTudas);
+                        }
+                    }
+                });
+                //Tudas End --------------------------->
+
+                Label MoralLabel = new Label("Morál:");
+                MoralLabel.setLayoutX(900);
+                MoralLabel.setLayoutY(Labely);
+                MoralLabel.setFont(new Font("Cardinal",20));
+                Label MoralLabelAmount = new Label("1");
+                MoralLabelAmount.setLayoutX(970);
+                MoralLabelAmount.setLayoutY(Labely);
+                MoralLabelAmount.setFont(new Font("Cardinal", 20));
+                SpecButton MoralButtonIncrease = new SpecButton("+");
+                MoralButtonIncrease.setLayoutX(930);
+                MoralButtonIncrease.setLayoutY(Labely + 40);
+                MoralButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofMoral || (Integer.parseInt(MoralLabelAmount.getText()) == 10)){
+
+                        }
+                        else{
+                            int gvalue = Integer.parseInt(GoldAmount.getText());
+                            GoldAmount.setText("" + (gvalue - Globals.priceofMoral) + "");
+                            int MoralValue = Integer.parseInt(MoralLabelAmount.getText());
+                            MoralLabelAmount.setText("" + (MoralValue+1)+ "");
+                            Globals.priceofMoral = (int) (Math.ceil(Globals.priceofMoral *0.1) + Globals.priceofMoral);
+                            System.out.println("Morál ára:" + Globals.priceofMoral);
+                        }
+                    }
+                });
+                // Moral End --------------------------->
+
+
+                Label SzerencseLabel = new Label("Szerencse:");
+                SzerencseLabel.setLayoutX(1050);
+                SzerencseLabel.setLayoutY(Labely);
+                SzerencseLabel.setFont(new Font("Cardinal",20));
+                Label SzerencseLabelAmount = new Label("1");
+                SzerencseLabelAmount.setLayoutX(1150);
+                SzerencseLabelAmount.setLayoutY(Labely);
+                SzerencseLabelAmount.setFont(new Font("Cardinal", 20));
+                SpecButton SzerencseButtonIncrease = new SpecButton("+");
+                SzerencseButtonIncrease.setLayoutX(1080);
+                SzerencseButtonIncrease.setLayoutY(Labely + 40);
+                SzerencseButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofSzerencse || (Integer.parseInt(SzerencseLabelAmount.getText()) == 10)){
+
+                        }
+                        else{
+                            int gvalue = Integer.parseInt(GoldAmount.getText());
+                            GoldAmount.setText("" + (gvalue - Globals.priceofSzerencse) + "");
+                            int SzerencseValue = Integer.parseInt(SzerencseLabelAmount.getText());
+                            SzerencseLabelAmount.setText("" + (SzerencseValue+1)+ "");
+
+                            Globals.priceofSzerencse= (int) (Math.ceil(Globals.priceofSzerencse *0.1) + Globals.priceofSzerencse);
+                            System.out.println("Szerencse ára:" + Globals.priceofSzerencse);
+                        }
+                    }
+                });
+                //  Szerencse End --------------------------->
+                root.getChildren().addAll(TamadasLabel, VedekezesLabel, VarazseroLabel, TudasLabel, MoralLabel, SzerencseLabel);
+                root.getChildren().addAll(TamadasLabelAMount, VedekezesLabelAmount, VarazseroLabelAmount ,TudasLabelAmount, MoralLabelAmount, SzerencseLabelAmount);
+                root.getChildren().addAll(TamadasButtonIncrease, VedekezesButtonIncrease, VarazseroButtonIncrease, TudasButtonIncrease, MoralButtonIncrease, SzerencseButtonIncrease);
+                //Specifications of the Hero end
                 Label mainLabel = new Label("HARCRA FEL!");
                 Label UnitLabel = new Label("VÁLASSZ EGYSÉG(EK)ET:");
                 Label MagicLabel = new Label("VÁLASSZ VARÁZSERŐ(KE)T:");
-                Label GoldLabel = new Label("Arany:");
-                Label GoldAmount = new Label(String.valueOf(Globals.GoldAmount));
+
                 //Egységek
                 Label CurrentUnits = new Label("Összes egység:");
                 Label UnitAmount = new Label("0");
@@ -266,14 +457,7 @@ public class ViewManager {
                 MagicLabel.setLayoutX(800);
                 MagicLabel.setLayoutY(100);
                 MagicLabel.setFont(new Font("Cardinal", 25));
-                // Gold show
-                GoldLabel.setLayoutX(50);
-                GoldLabel.setLayoutY(100);
-                GoldLabel.setFont(new Font("Cardinal", 25));
 
-                GoldAmount.setLayoutX(230);
-                GoldAmount.setLayoutY(100);
-                GoldAmount.setFont(new Font("Cardinal", 25));
 
                 //Units
                 //Units show

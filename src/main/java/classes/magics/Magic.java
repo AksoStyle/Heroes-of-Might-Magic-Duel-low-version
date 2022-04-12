@@ -31,14 +31,16 @@ public class Magic {
     }
 
     public Magic(){
-        this.ar = 1;
-        this.mannakoltseg = 1;
-        this.hatas = " ";
+        this.ar = 0;
+        this.mannakoltseg = 0;
+        this.hatas = "";
     }
 
     public Magic(int ar, int mannakoltseg, String hatas) {
-        this.ar = ar;
-        this.mannakoltseg = mannakoltseg;
-        this.hatas = hatas;
+        setAr(ar);
+        setMannakoltseg(mannakoltseg);
+        setHatas(hatas);
     }
+
+
 }

@@ -1,74 +1,84 @@
 package classes.Units;
 
 public class Unit {
-    public int sebzes;
-    public int pancel;
-
-    public int kezdemenyezes;
-    public int criticalHit;
-
-    public int getSebzes() {
-        return sebzes;
-    }
-    public void setSebzes(int sebzes) {
-        if(sebzes < 1){
-            this.sebzes = 1;
-        }
-        else{
-            this.sebzes = sebzes;
-        }
-    }
-
-    public int getPancel() {
-        return pancel;
-    }
-    public void setPancel(int pancel) {
-        if(pancel < 1){
-            this.pancel = 1;
-        }
-        else{
-            this.pancel = pancel;
-        }
-    }
-
-    public int getKezdemenyezes() {
-        return kezdemenyezes;
-    }
-    public void setKezdemenyezes(int kezdemenyezes) {
-        if(kezdemenyezes < 1){
-            this.kezdemenyezes = 1;
-        }
-        else{
-            this.kezdemenyezes = kezdemenyezes;
-        }
-    }
-
-    public int getCriticalHit() {
-        return criticalHit;
-    }
-    public void setCriticalHit(int criticalHit) {
-        if(criticalHit < 1){
-            this.criticalHit = 1;
-        }
-        else{
-            this.criticalHit = criticalHit;
-        }
-    }
+    private int Health;
+    private int Damage;
+    private int Speed;
+    private int Initiation;
+    private String Speciality;
 
     public Unit(){
-        this.sebzes = 1;
-        this.pancel = 1;
-        this.kezdemenyezes = 1;
-        this.criticalHit = 1;
+        Health = 1;
+        Damage = 1;
+        Speed = 1;
+        Initiation = 1;
+        Speciality = "";
+    }
+    public Unit(int health, int damage, int speed, int initiation, String speciality) {
+        Health = health;
+        Damage = damage;
+        Speed = speed;
+        Initiation = initiation;
+        Speciality = speciality;
     }
 
-
-    public Unit(int sebzes, int pancel, int kezdemenyezes, int criticalHit) {
-        this.sebzes = sebzes;
-        this.pancel = pancel;
-        this.kezdemenyezes = kezdemenyezes;
-        this.criticalHit = criticalHit;
+    public int getHealth() {
+        return Health;
     }
 
+    public void setHealth(int health) {
+        if (health < 0){
+            this.Health = 1;
+        }
+        else{
+            Health = health;
+        }
+
+    }
+
+    public int getDamage() {
+        return Damage;
+    }
+
+    public void setDamage(int damage) {
+        if (damage < 0){
+            Damage = 1;
+        }
+        else{
+            Damage = damage;
+        }
+        Damage = damage;
+    }
+
+    public int getSpeed() {
+        return Speed;
+    }
+
+    public void setSpeed(int speed) {
+        if (speed < 0){
+            Speed = 1;
+        }
+        else{
+            Speed = speed;
+        }
+
+    }
+
+    public int getInitiation() {
+        return Initiation;
+    }
+
+    public void setInitiation(int initiation) {
+        if (initiation < 0){
+            Initiation = 1;
+        }
+        else{
+            Initiation = initiation;
+        }
+    }
+
+    public String getSpeciality() {
+        return Speciality;
+    }
 
 }

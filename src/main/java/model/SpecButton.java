@@ -7,16 +7,16 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class HeroesOfMightButton extends Button{
+public class SpecButton extends Button{
     private final String FONT_PATH = "src/main/java/model/resources/kenvector_future.ttf";
-    private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url('yellow_button_pressed.png');";
-    private final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url('yellow_button.png');";
+    private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url('yellow_little_button_pressed.png');";
+    private final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url('yellow_little_button.png');";
 
-    public HeroesOfMightButton(String text){
+    public SpecButton(String text){
         setText(text);
         setButtonFont();
-        setPrefWidth(190);
-        setPrefHeight(49);
+        setPrefWidth(49);
+        setPrefHeight(45);
         setStyle(BUTTON_FREE_STYLE);
         initializeButtonListeners();
     }
@@ -31,20 +31,18 @@ public class HeroesOfMightButton extends Button{
 
     private void setButtonPressedStyle(){
         setStyle(BUTTON_PRESSED_STYLE);
-        setPrefHeight(45);
+        setPrefHeight(49);
         setLayoutY(getLayoutY() + 4); // the pressed button image height is 4 pixels smaller than the released one
     }
 
     private void setButtonReleasedStyle(){
         setStyle(BUTTON_FREE_STYLE);
-        setPrefHeight(49);
+        setPrefHeight(45);
         setLayoutY(getLayoutY() - 4); //the same happens here as I mentioned above
 
     }
 
     private void initializeButtonListeners(){
-
-
         setOnMousePressed(event -> {
             if(event.getButton().equals(MouseButton.PRIMARY)){
                 setButtonPressedStyle();
@@ -57,26 +55,10 @@ public class HeroesOfMightButton extends Button{
             }
         });
 
-
         setOnMouseEntered(event -> setEffect(new DropShadow()));
-
         setOnMouseExited(event -> setEffect(null));
-
     }
-
-
-    /*
-    private void PathFound(){
-        String directoryPath = "src/main/java/model/resources/kenvector_future.ttf";
-        File file = new File(directoryPath);
-
-        if(file.isFile()){
-            System.out.println("File is a file");
-        }
-        else{
-            System.out.println("it s not a file");
-        }
-    }
-
-     */
 }
+
+
+
