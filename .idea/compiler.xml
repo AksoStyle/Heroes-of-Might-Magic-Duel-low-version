@@ -13,4 +13,9 @@
       <module name="kotprog" target="17" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="kotprog" options="--add-exports java.security.jgss/org=main.kotprog" />
+    </option>
+  </component>
 </project>

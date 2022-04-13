@@ -1,15 +1,17 @@
 package main.kotprog;
 
+import classes.Units.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import model.SpecButton;
 
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import static main.kotprog.Globals.primaryStage;
 
@@ -17,74 +19,30 @@ public class Map {
     private static final int MAP_WIDTH = 12;
     private static final int MAP_HEIGHT = 10;
 
-    private StackPane createCell(BooleanProperty cellSwitch) {
+    Scene menu = Globals.primaryStage.getScene();
+    Pane root = new Pane();
 
-        StackPane cell = new StackPane();
 
-        cell.setOnMouseClicked(e -> cellSwitch.set(! cellSwitch.get() ));
+    Foldmuves foldmuves = new Foldmuves();
+    Ijasz ijasz = new Ijasz();
+    Griff griff = new Griff();
+    Cica cica = new Cica();
+    PancelosCica pancelosCica = new PancelosCica();
+    ArrayList<Unit> units = new ArrayList<Unit>();
 
-        Circle circle = new Circle(10, Color.CORNFLOWERBLUE);
 
-        circle.visibleProperty().bind(cellSwitch);
 
-        cell.getChildren().add(circle);
-        cell.getStyleClass().add("cell");
-        return cell;
+
+
+
+    //------------------------------>
+        //Label mana = new Label("Mana: ");
+        //mana.setLayoutX(30);
+        //mana.setLayoutY(30);
+        //root.getChildren().addAll(mana);
+        //scene.getStylesheets().add("grid-with-borders.css");
+        //Image backgroundImage = new Image("grass.png",true);
+        //root.setBackground(new Background(new BackgroundImage(backgroundImage,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
+        //Globals.primaryStage.setScene(new Scene(root, 1200 , 800));
     }
 
-    private GridPane createGrid(BooleanProperty[][] switches) {
-
-        int numCols = switches.length ;
-        int numRows = switches[0].length ;
-
-        GridPane grid = new GridPane();
-
-        for (int x = 0 ; x < numCols ; x++) {
-            ColumnConstraints cc = new ColumnConstraints();
-            cc.setFillWidth(true);
-            cc.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(cc);
-        }
-
-        for (int y = 0 ; y < numRows ; y++) {
-            RowConstraints rc = new RowConstraints();
-            rc.setFillHeight(true);
-            rc.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(rc);
-        }
-
-        for (int x = 0 ; x < numCols ; x++) {
-            for (int y = 0 ; y < numRows ; y++) {
-                grid.add(createCell(switches[x][y]), x, y);
-            }
-        }
-
-        grid.getStyleClass().add("grid");
-        return grid;
-    }
-
-    public void gamemapstart(){
-        int numCols = MAP_WIDTH ;
-        int numRows = MAP_HEIGHT ;
-
-        BooleanProperty[][] switches = new BooleanProperty[numCols][numRows];
-        for (int x = 0 ; x < numCols ; x++) {
-            for (int y = 0 ; y < numRows ; y++) {
-                switches[x][y] = new SimpleBooleanProperty();
-            }
-        }
-        Image backgroundImage = new Image("grass.png",true);
-        GridPane grid = createGrid(switches);
-        StackPane root = new StackPane(grid);
-        Scene scene = new Scene(root, 1200, 800);
-        scene.getStylesheets().add("grid-with-borders.css");
-        root.setBackground(new Background(new BackgroundImage(backgroundImage,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-
-
-
-
-}

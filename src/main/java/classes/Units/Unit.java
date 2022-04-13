@@ -1,11 +1,13 @@
 package classes.Units;
 
-public class Unit {
+public abstract class Unit {
     private int Health;
     private int Damage;
     private int Speed;
     private int Initiation;
     private String Speciality;
+    public int x_pos;
+    public int y_pos;
 
     public Unit(){
         Health = 1;
@@ -80,5 +82,32 @@ public class Unit {
     public String getSpeciality() {
         return Speciality;
     }
+
+    public boolean IsLiving(Unit object){
+        if (object.Health <= 0){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    public boolean DamageUnit(Unit Hero, Unit Enemy){
+        Enemy.setHealth(Enemy.getHealth() - Hero.getDamage());
+        return true;
+    }
+
+    public void CounterAttack(Unit Hero, Unit Enemy){
+        if (DamageUnit(Hero, Enemy)){
+            DamageUnit(Enemy, Hero);
+        }
+        if (DamageUnit(Enemy, Hero)){
+            DamageUnit(Hero, Enemy);
+        }
+    }
+
+
+
+
 
 }

@@ -1,5 +1,8 @@
 package classes.Units;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.Random;
 
 public class Ijasz extends Unit{
@@ -9,14 +12,23 @@ public class Ijasz extends Unit{
     private int Speed;
     private int Initiation;
     private String Speciality;
+    private final String FILE_PATH  = "Unit_Archer.png";
+    private Image img = new Image(FILE_PATH);
+    private final ImageView image = new ImageView(img);
     Random r = new Random();
 
     public Ijasz(){
         Health = 7;
-        Damage = r.nextInt(2-4);
+        Damage = r.nextInt(2,5) + 1;
         Speed = 4;
         Initiation = 9;
         Speciality = "Shoot";
+        image.setFitWidth(55);
+        image.setFitHeight(55);
+    }
+
+    public ImageView getImage() {
+        return image;
     }
 
     public String getName() {

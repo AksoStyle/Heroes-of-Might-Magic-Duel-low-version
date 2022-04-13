@@ -1,25 +1,30 @@
 package view;
 
+import classes.Enemy;
 import classes.Hero;
+import classes.Units.*;
+import classes.magics.VillamCsapas;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.kotprog.Globals;
-import main.kotprog.Map;
 import model.HeroesOfMightButton;
 import model.SpecButton;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +35,29 @@ public class ViewManager {
     private final AnchorPane mainPane;
     private final Scene mainScene;
     private final Stage mainStage;
+    private GridPane grid;
+
+    private int foldmuvesAmount = 0;
+    private int ijaszAmount = 0;
+    private int griffAmount = 0;
+    private int cicaAmount = 0;
+    private int armourdercicaamount = 0;
+
+    private int villamcsapasamount = 0;
+    private int tuzlabdaamount = 0;
+    private int feltamasztasamount = 0;
+    private int bonusamount = 0;
+    private int doublehealamount = 0;
 
     private final static int MENU_BUTTONS_START_X = WIDTH/6;
     private final static int MENU_BUTTONS_START_Y = 150;
 
     List<HeroesOfMightButton> menuButtons;
+    Foldmuves foldmuves = new Foldmuves();
+    Ijasz ijasz = new Ijasz();
+    Griff griff = new Griff();
+    Cica cica = new Cica();
+    PancelosCica panceloscica = new PancelosCica();
 
     public ViewManager(){
         menuButtons = new ArrayList<>();
@@ -46,6 +69,7 @@ public class ViewManager {
         createBackground();
         CreateMainLabelText();
         mainPane.getChildren().add(Globals.GlobalImgView);
+        grid = new GridPane();
 
     }
 
@@ -72,9 +96,9 @@ public class ViewManager {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                Enemy randomenemy = new Enemy(1,1,1,1,1,1);
                 Scene menu = Globals.primaryStage.getScene();
                 Pane root = new Pane();
-                VBox vbox = new VBox();
                 HeroesOfMightButton exitButtonFromGame = new HeroesOfMightButton("EXIT");
                 exitButtonFromGame.setLayoutX(0);
                 exitButtonFromGame.setLayoutY(0);
@@ -101,11 +125,308 @@ public class ViewManager {
                 startGameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+                        Pane root = new Pane();
 
 
-                        Map gamemap = new Map();
+                        // save menu
+                        Scene menu = Globals.primaryStage.getScene();;
 
-                        gamemap.gamemapstart();
+                        // save menu end
+                        // bg image
+                        Image backgroundImage = new Image("grass.png",true);
+                        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
+                        root.setBackground(new Background(background));
+                        // bg image end
+
+                        grid.setAlignment(Pos.CENTER_RIGHT);
+                        HBox hbox = new HBox(root, grid);
+                        hbox.setBackground(new Background(background));
+
+
+
+
+                        // grid for the map
+                        int rows = 10;
+                        int columns = 12;
+
+                        for(int i = 0; i < columns; i++) {
+                            ColumnConstraints column = new ColumnConstraints(55);
+                            grid.getColumnConstraints().add(column);
+
+                        }
+                        for(int i = 0; i < rows; i++) {
+                            RowConstraints row = new RowConstraints(55);
+                            grid.getRowConstraints().add(row);
+                        }
+
+
+                        /*
+                        grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                            @Override
+                            public void handle(MouseEvent mouseEvent) {
+                                if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                    return;
+                                }
+                                int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
+                                int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                System.out.println(tmpx + " : " + tmpy);
+
+                                addPictureToCell(tmpx, tmpy,  foldmuves.getImage());
+                            }
+                        });
+                        */
+
+                        grid.setStyle("-fx-grid-lines-visible: true");
+
+
+
+                        //Buttons-Labels -  HUD ---------------------------------------------->
+                        //Units
+                        Label Units = new Label("Egységek kiválasztása:");
+                        Units.setLayoutX(0);
+                        Units.setLayoutY(0);
+                        Units.setFont(new Font("Cardinal", 30));
+                        root.getChildren().add(Units);
+                        if (foldmuvesAmount != 0){
+                            SpecButton fmb = new SpecButton("F");
+                            fmb.setLayoutX(0);
+                            fmb.setLayoutY(100);
+                            root.getChildren().add(fmb);
+                            fmb.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+
+                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent mouseEvent) {
+
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                                return;
+                                            }
+                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
+                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+
+                                            if (tmpx < 2){
+                                                addPictureToCell(tmpx, tmpy,  foldmuves.getImage());
+                                                System.out.println("Földműves elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                fmb.setVisible(false);
+                                                grid.setOnMouseClicked(null);
+                                            }
+
+
+
+                                        }
+
+                                    });
+
+                                }
+                            });
+
+
+
+                        }
+                        if (ijaszAmount != 0){
+                            SpecButton ijb = new SpecButton("I");
+                            ijb.setLayoutX(55);
+                            ijb.setLayoutY(100);
+                            root.getChildren().add(ijb);
+                            ijb.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+
+                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent mouseEvent) {
+
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                                return;
+                                            }
+                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
+                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+
+                                            if (tmpx < 2){
+                                                addPictureToCell(tmpx, tmpy,  ijasz.getImage());
+                                                System.out.println("Ijász elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                ijb.setVisible(false);
+                                                grid.setOnMouseClicked(null);
+                                            }
+
+
+
+                                        }
+
+                                    });
+
+                                }
+                            });
+                        }
+                        if (griffAmount != 0){
+                            SpecButton gb = new SpecButton("G");
+                            gb.setLayoutX(110);
+                            gb.setLayoutY(100);
+                            root.getChildren().add(gb);
+                            gb.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+
+                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent mouseEvent) {
+
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                                return;
+                                            }
+                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
+                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+
+                                            if (tmpx < 2){
+                                                addPictureToCell(tmpx, tmpy,  griff.getImage());
+                                                System.out.println("Griff elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                gb.setVisible(false);
+                                                grid.setOnMouseClicked(null);
+                                            }
+
+
+
+                                        }
+
+                                    });
+
+                                }
+                            });
+                        }
+                        if (cicaAmount != 0){
+                            SpecButton cb = new SpecButton("C");
+                            cb.setLayoutX(165);
+                            cb.setLayoutY(100);
+                            root.getChildren().add(cb);
+                            cb.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+
+                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent mouseEvent) {
+
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                                return;
+                                            }
+                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
+                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+
+                                            if (tmpx < 2){
+                                                cica.x_pos = tmpx;
+                                                cica.y_pos = tmpy;
+                                                addPictureToCell(cica.x_pos, cica.y_pos,  cica.getImage());
+
+                                                System.out.println("Cica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                cb.setVisible(false);
+                                                grid.setOnMouseClicked(null);
+                                            }
+
+
+
+                                        }
+
+                                    });
+
+                                }
+                            });
+                        }
+                        if (armourdercicaamount != 0){
+                            SpecButton acb = new SpecButton("P");
+                            acb.setLayoutX(220);
+                            acb.setLayoutY(100);
+                            root.getChildren().add(acb);
+                            acb.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+
+                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent mouseEvent) {
+
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                                return;
+                                            }
+                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
+                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+
+                                            if (tmpx < 2){
+                                                addPictureToCell(tmpx, tmpy,  panceloscica.getImage());
+                                                System.out.println("PáncélosCica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                acb.setVisible(false);
+                                                grid.setOnMouseClicked(null);
+                                            }
+
+
+
+                                        }
+
+                                    });
+
+                                }
+                            });
+                        }
+                        //Units end
+                        Label manapoints = new Label("Mana: ");
+                        manapoints.setLayoutX(0);
+                        manapoints.setLayoutY(750);
+                        manapoints.setFont(new Font("Cardinal", 30));
+                        Label manapointsamount = new Label("0");
+                        manapointsamount.setLayoutX(85);
+                        manapointsamount.setLayoutY(750);
+                        manapointsamount.setFont(new Font("Cardinal", 30));
+
+                        root.getChildren().addAll(manapoints, manapointsamount);
+                        //Magics
+                        Label Magics = new Label("Varázslatok kiválasztása:");
+                        Magics.setLayoutX(0);
+                        Magics.setLayoutY(300);
+                        Magics.setFont(new Font("Cardinal", 30));
+                        root.getChildren().add(Magics);
+                        int MagLayy = 400;
+                        if (villamcsapasamount != 0){
+                            SpecButton VillamcsapasButton = new SpecButton("V");
+                            VillamcsapasButton.setLayoutX(0);
+                            VillamcsapasButton.setLayoutY(MagLayy);
+                            root.getChildren().add(VillamcsapasButton);
+                        }
+                        if (tuzlabdaamount != 0){
+                            SpecButton TuzlabdaButton = new SpecButton("T");
+                            TuzlabdaButton.setLayoutX(60);
+                            TuzlabdaButton.setLayoutY(MagLayy);
+                            root.getChildren().add(TuzlabdaButton);
+                        }
+                        if (feltamasztasamount != 0){
+                            SpecButton FeltamasztasButton = new SpecButton("+");
+                            FeltamasztasButton.setLayoutX(120);
+                            FeltamasztasButton.setLayoutY(MagLayy);
+                            root.getChildren().add(FeltamasztasButton);
+                        }
+                        if (bonusamount != 0){
+                            SpecButton BonusButton = new SpecButton("B");
+                            BonusButton.setLayoutX(180);
+                            BonusButton.setLayoutY(MagLayy);
+                            root.getChildren().add(BonusButton);
+                        }
+                        if (doublehealamount != 0){
+                            SpecButton DoubleHealButton = new SpecButton("H");
+                            DoubleHealButton.setLayoutX(240);
+                            DoubleHealButton.setLayoutY(MagLayy);
+                            root.getChildren().add(DoubleHealButton);
+                        }
+
+                        //magics end
+                        //Buttons HUD end ------------------------------------------>
+
+
+
+
+                        mainStage.setScene(new Scene(hbox, WIDTH, HEIGHT));
+                        //mainStage.setFullScreen(true);
+
                     }
                 });
 
@@ -536,6 +857,8 @@ public class ViewManager {
                             UnitAmount.setText("" + (unitvalue+1)+ "");
                             int Foldmuvesvalue = Integer.parseInt(FoldmuvesAmount.getText());
                             FoldmuvesAmount.setText("" + (Foldmuvesvalue+1) + "");
+                            foldmuvesAmount++;
+                            System.out.println(foldmuvesAmount);
                         }
                     }
                 });
@@ -560,6 +883,8 @@ public class ViewManager {
                             UnitAmount.setText("" + (unitvalue+1)+ "");
                             int ijaszvalue = Integer.parseInt(IjaszAmount.getText());
                             IjaszAmount.setText("" + (ijaszvalue+1) + "");
+                            ijaszAmount++;
+                            System.out.println(ijaszAmount);
                         }
                     }
                 });
@@ -585,6 +910,8 @@ public class ViewManager {
                             UnitAmount.setText("" + (unitvalue+1)+ "");
                             int Sarkanyvalue = Integer.parseInt(SarkanyAmount.getText());
                             SarkanyAmount.setText("" + (Sarkanyvalue+1) + "");
+                            griffAmount++;
+                            System.out.println(griffAmount);
                         }
                     }
                 });
@@ -609,6 +936,8 @@ public class ViewManager {
                             UnitAmount.setText("" + (unitvalue+1)+ "");
                             int Cicavalue = Integer.parseInt(CicaAmount.getText());
                             CicaAmount.setText("" + (Cicavalue+1) + "");
+                            cicaAmount++;
+                            System.out.println(cicaAmount);
                         }
                     }
                 });
@@ -633,6 +962,8 @@ public class ViewManager {
                             UnitAmount.setText("" + (unitvalue+1)+ "");
                             int ArmouredCicavalue = Integer.parseInt(ArmnouredCicaAmount.getText());
                             ArmnouredCicaAmount.setText("" + (ArmouredCicavalue+1) + "");
+                            armourdercicaamount++;
+                            System.out.println(armourdercicaamount);
                         }
                     }
                 });
@@ -660,6 +991,7 @@ public class ViewManager {
                             GoldAmount.setText("" + (gvalue - 120) + "");
                             int tuzvalue = Integer.parseInt(TuzlabdaAmount.getText());
                             TuzlabdaAmount.setText("" + (tuzvalue+1)+ "");
+                            tuzlabdaamount++;
                         }
                     }
                 });
@@ -683,6 +1015,7 @@ public class ViewManager {
                             GoldAmount.setText("" + (gvalue - 60) + "");
                             int Villamvalue = Integer.parseInt(VillamcsapasAmount.getText());
                             VillamcsapasAmount.setText("" + (Villamvalue+1)+ "");
+                            villamcsapasamount++;
                         }
                     }
                 });
@@ -705,6 +1038,7 @@ public class ViewManager {
                             GoldAmount.setText("" + (gvalue - 120) + "");
                             int Feltamadasvalue = Integer.parseInt(FeltamadasAmount.getText());
                             FeltamadasAmount.setText("" + (Feltamadasvalue+1)+ "");
+                            feltamasztasamount++;
                         }
                     }
                 });
@@ -727,6 +1061,7 @@ public class ViewManager {
                             GoldAmount.setText("" + (gvalue - 200) + "");
                             int Bonusvalue = Integer.parseInt(BonusAmount.getText());
                             BonusAmount.setText("" + (Bonusvalue+1)+ "");
+                            bonusamount++;
                         }
                     }
                 });
@@ -748,6 +1083,7 @@ public class ViewManager {
                             GoldAmount.setText("" + (gvalue - 200) + "");
                             int DoublehealValue = Integer.parseInt(DoubleHealAmount.getText());
                             DoubleHealAmount.setText("" + (DoublehealValue+1)+ "");
+                            doublehealamount++;
                         }
                     }
                 });
@@ -902,5 +1238,28 @@ public class ViewManager {
         mainPane.getChildren().add(text);
     }
 
+    /*
+    public Node getNodeByRowColumnIndex(int rowIndex, int columnIndex){
+        Node node = null;
+        ObservableList<Node> observableList = grid.getChildren();
+        for (Node nd : observableList){
+            System.out.println(nd.toString());
+            System.out.println(GridPane.getRowIndex(nd));
+            if (GridPane.getRowIndex(nd) == rowIndex && GridPane.getColumnIndex(nd) == columnIndex){
+                node = nd;
+                break;
+            }
+        }
+,
+        return node;
+    }
+     */
 
+    public void addPictureToCell(int col, int row, ImageView img){
+        grid.add(img, col, row);
+    }
+
+   // public boolean IsCharacterOnCell(int col, int row){
+
+    //}
 }

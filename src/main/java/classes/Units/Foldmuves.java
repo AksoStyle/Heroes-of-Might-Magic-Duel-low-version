@@ -1,5 +1,12 @@
 package classes.Units;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class Foldmuves extends Unit{
@@ -8,15 +15,25 @@ public class Foldmuves extends Unit{
     private int Damage;
     private int Speed;
     private int Initiation;
-    private String Speciality;
+    private final String Speciality;
+
+    private final String FILE_PATH  = "Unit_Foldmuves.png";
+    private Image img = new Image(FILE_PATH);
+    private final ImageView image = new ImageView(img);
     Random r = new Random();
 
     public Foldmuves(){
         Health = 3;
-        Damage = r.nextInt(1-1);
+        Damage = 1;
         Speed = 4;
         Initiation = 8;
         Speciality = "None";
+        image.setFitWidth(55);
+        image.setFitHeight(55);
+    }
+
+    public ImageView getImage() {
+        return image;
     }
 
     public String getName() {

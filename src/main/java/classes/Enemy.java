@@ -1,5 +1,11 @@
 package classes;
 
+import classes.Units.Unit;
+import main.kotprog.Globals;
+
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Enemy {
     private int tamadas; // az egységek sebzését növeli meg, tulajdonságpontonként 10%-kal.
     private int vedekezes; // az egységeket ért sebzést csökkenti, tulajdonságpontonként 5%-kal.
@@ -7,7 +13,10 @@ public class Enemy {
     private int tudas; //  a hős maximális mannapontjait növeli, tulajdonságpontonként 10-zel.
     private int moral; //  az egységek kezdeményezését növeli, tulajdonságpontonként 1-gyel.
     private int szerencse; // az egységek kritikus támadásának esélyét növeli, tulajdonságpontonként 5%-kal.
-
+    private final int StartGoldamount = 1000;
+    private int goldAmount;
+    Random rnd = new Random();
+    ArrayList<Unit> unit = new ArrayList<Unit>();
 
     public Enemy(){
         tamadas = 1;
@@ -19,7 +28,8 @@ public class Enemy {
     }
 
     public Enemy(int tamadas, int vedekezes, int varazsero, int tudas, int moral, int szerencse) {
-        this.tamadas = tamadas;
+        goldAmount = StartGoldamount;
+        this.tamadas = Globals.RandomTraitetNovel(Globals.priceofTamadasenemy, tamadas, rnd.nextInt(10)+1,goldAmount );
         this.vedekezes = vedekezes;
         this.varazsero = varazsero;
         this.tudas = tudas;
