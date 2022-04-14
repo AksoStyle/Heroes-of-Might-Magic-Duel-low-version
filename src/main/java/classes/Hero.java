@@ -1,5 +1,9 @@
 package classes;
 
+import classes.Units.Unit;
+
+import java.util.ArrayList;
+
 public class Hero {
     private int tamadas; // az egységek sebzését növeli meg, tulajdonságpontonként 10%-kal.
     private int vedekezes; // az egységeket ért sebzést csökkenti, tulajdonságpontonként 5%-kal.
@@ -8,6 +12,18 @@ public class Hero {
     private int moral; //  az egységek kezdeményezését növeli, tulajdonságpontonként 1-gyel.
     private int szerencse; // az egységek kritikus támadásának esélyét növeli, tulajdonságpontonként 5%-kal.
     private int mana; // A hős manája, mellyel varázserőt tud használni
+    private ArrayList<Unit> units; // a hős egységei
+
+    public ArrayList<Unit> getUnits() {
+        return units;
+    }
+
+    public void setUnits(ArrayList<Unit> units) {
+        this.units = units;
+    }
+
+
+
 
 
     public Hero(){
@@ -18,6 +34,7 @@ public class Hero {
         this.moral = 1;
         this.szerencse = 1;
         this.mana = 10;
+        units = new ArrayList<>();
     }
 
     public Hero(int tamadas, int vedekezes, int varazsero, int tudas, int moral, int szerencse) {
@@ -27,6 +44,7 @@ public class Hero {
         setTudas(tudas);
         setMoral(moral);
         setSzerencse(szerencse);
+        units = new ArrayList<>();
     }
 
     public int getTamadas() {

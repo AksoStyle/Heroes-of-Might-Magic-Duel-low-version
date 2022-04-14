@@ -12,6 +12,7 @@ public abstract class Unit {
     private ImageView image;
     public int x_pos;
     public int y_pos;
+    public int unitamount;
 
     public Unit() {
         Health = 1;
@@ -21,7 +22,9 @@ public abstract class Unit {
         Speciality = "";
         x_pos = 20;
         y_pos = 20;
+        unitamount = 0;
     }
+
     public Unit(int health, int damage, int speed, int initiation, String speciality) {
         Health = health;
         Damage = damage;
@@ -53,7 +56,6 @@ public abstract class Unit {
         else{
             Health = health;
         }
-
     }
 
     public int getDamage() {
@@ -62,12 +64,12 @@ public abstract class Unit {
 
     public void setDamage(int damage) {
         if (damage < 0){
-            Damage = 1;
+            this.Damage = 1;
         }
         else{
-            Damage = damage;
+            this.Damage = damage;
         }
-        Damage = damage;
+
     }
 
     public int getSpeed() {
@@ -90,10 +92,10 @@ public abstract class Unit {
 
     public void setInitiation(int initiation) {
         if (initiation < 0){
-            Initiation = 1;
+            this.Initiation = 1;
         }
         else{
-            Initiation = initiation;
+            this.Initiation = initiation;
         }
     }
 

@@ -19,7 +19,7 @@ public class PancelosCica extends Unit{
 
     public PancelosCica(){
         Health = 100;
-        Damage = r.nextInt(50,101) + 50;
+        Damage = r.nextInt(50,101);
         Speed = 3;
         Initiation = 50;
         Speciality = "Meowing louder";

@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -22,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.kotprog.Game;
 import main.kotprog.Globals;
 import model.HeroesOfMightButton;
 import model.SpecButton;
@@ -34,8 +36,9 @@ public class ViewManager {
     private final AnchorPane mainPane;
     private final Scene mainScene;
     private final Stage mainStage;
-    private GridPane grid;
 
+    private ArrayList<SpecButton> specButtons;
+    private Pane root3;
 
     private int foldmuvesAmount = 0;
     private int ijaszAmount = 0;
@@ -49,7 +52,16 @@ public class ViewManager {
     private int bonusamount = 0;
     private int doublehealamount = 0;
 
-    private final static int MENU_BUTTONS_START_X = WIDTH/6;
+    private Label FoldmuvesAmount;
+    private Label IjaszAmount;
+    private Label SarkanyAmount;
+    private Label CicaAmount;
+    private Label ArmnouredCicaAmount;
+
+    private Enemy randomenemy;
+    private Game game;
+
+    private final static int MENU_BUTTONS_START_X = WIDTH / 6;
     private final static int MENU_BUTTONS_START_Y = 150;
 
     List<HeroesOfMightButton> menuButtons;
@@ -59,7 +71,7 @@ public class ViewManager {
     Cica cica = new Cica();
     PancelosCica panceloscica = new PancelosCica();
 
-    public ViewManager(){
+    public ViewManager() {
         menuButtons = new ArrayList<>();
         mainPane = new AnchorPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
@@ -69,29 +81,41 @@ public class ViewManager {
         createBackground();
         CreateMainLabelText();
         mainPane.getChildren().add(Globals.GlobalImgView);
-        grid = new GridPane();
+
+        specButtons = new ArrayList<>();
+        root3 = new Pane();
+        Hero hero = new Hero();
+        randomenemy = new Enemy(1,1,1,1,1,1,0,0,0,0,0);
+        game = new Game(hero, randomenemy, new GridPane());
+        FoldmuvesAmount = new Label();
+        IjaszAmount = new Label();
+        SarkanyAmount = new Label();
+        CicaAmount = new Label();
+        ArmnouredCicaAmount = new Label();
+
 
     }
 
-    public Stage getMainStage(){
+    public Stage getMainStage() {
         return mainStage;
     }
 
-    private void addMenuButton(HeroesOfMightButton button){
+    private void addMenuButton(HeroesOfMightButton button) {
         button.setLayoutX(MENU_BUTTONS_START_X);
         button.setLayoutY(MENU_BUTTONS_START_Y + menuButtons.size() * 150);
         menuButtons.add(button);
         mainPane.getChildren().add(button);
     }
 
-    private void createButton(){
+    private void createButton() {
         createStartButton();
         createModeButton();
         createHowToButton();
         createExitButton();
     }
-        //start --> game starts and getting ready to be played
-    private void createStartButton(){
+
+    //start --> game starts and getting ready to be played
+    private void createStartButton() {
         HeroesOfMightButton startButton = new HeroesOfMightButton("PLAY");
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -110,10 +134,9 @@ public class ViewManager {
                         alertBox.setHeaderText("");
                         Optional<ButtonType> result = alertBox.showAndWait();
                         ButtonType button = result.orElse(ButtonType.NO);
-                        if(button == ButtonType.YES){
+                        if (button == ButtonType.YES) {
                             Globals.primaryStage.setScene(menu);
-                        }
-                        else{
+                        } else {
                             alertBox.close();
                         }
 
@@ -128,63 +151,55 @@ public class ViewManager {
                 startGameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        Enemy randomenemy = new Enemy(1,1,1,1,1,1,0,0,0,0,0);
+                        //Hero unitok megadása
+
+                        addherotoherounits(game.getHos());
+
+                        //enemy unitok
+
                         System.out.println(randomenemy);
 
-                        for (int i = 0; i < randomenemy.enemyUnits.size(); i++){
+                        for (int i = 0; i < randomenemy.enemyUnits.size(); i++) {
                             Random rnd = new Random();
-                            randomenemy.enemyUnits.get(i).x_pos = rnd.nextInt(10, 11+1);
-                            randomenemy.enemyUnits.get(i).y_pos = rnd.nextInt(0, 10);
-                            grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
-                            System.out.println("Az ellenséges " + randomenemy.enemyUnits.get(i).getName() + ", Pozíciója: X: "+ randomenemy.enemyUnits.get(i).x_pos +", Y: "+ randomenemy.enemyUnits.get(i).y_pos);
 
-
-
-
-
-                            //if (!grid.getChildren().contains(randomenemy.enemyUnits.get(i).getImage())){
-                            //   grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
-                            //}
-
-                            /*
-                            if (grid.getChildren().contains(randomenemy.enemyUnits.get(i).getImage())){
-                                randomenemy.enemyUnits.get(i).x_pos = rnd.nextInt(10, 11+1);
+                            do {
+                                randomenemy.enemyUnits.get(i).x_pos = rnd.nextInt(10, 12);
                                 randomenemy.enemyUnits.get(i).y_pos = rnd.nextInt(0, 10);
-                                grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
-                                System.out.println("Az ellenséges " + randomenemy.enemyUnits.get(i).getName() + ", Pozíciója: X: "+ randomenemy.enemyUnits.get(i).x_pos +", Y: "+ randomenemy.enemyUnits.get(i).y_pos);
-                            }
-                            else{
-                                grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
-                                System.out.println("Az ellenséges " + randomenemy.enemyUnits.get(i).getName() + ", Pozíciója: X: "+ randomenemy.enemyUnits.get(i).x_pos +", Y: "+ randomenemy.enemyUnits.get(i).y_pos);
-                            }
 
-                             */
-
+                            } while (getNodeByRowColumnIndex(randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos));
+                            game.grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
+                            System.out.println("Az ellenséges " + randomenemy.enemyUnits.get(i).getName() + ", Pozíciója: X: " + randomenemy.enemyUnits.get(i).x_pos + ", Y: " + randomenemy.enemyUnits.get(i).y_pos);
 
                         }
 
 
-                        //System.out.println(Arrays.toString(randomenemy.enemyUnits.toArray()));
+                        /*
+                        if(specButtons.size() == 0) {
+                            HeroesOfMightButton startgamebutton = new HeroesOfMightButton("Start!");
+                            startgamebutton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    game.StartGame();
+                                }
+                            });
+                        }
 
-
-                        Pane root = new Pane();
-
+                         */
 
                         // save menu
-                        Scene menu = Globals.primaryStage.getScene();;
+                        Scene menu = Globals.primaryStage.getScene();
+                        ;
 
                         // save menu end
                         // bg image
-                        Image backgroundImage = new Image("grass.png",true);
+                        Image backgroundImage = new Image("grass.png", true);
                         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
-                        root.setBackground(new Background(background));
+                        root3.setBackground(new Background(background));
                         // bg image end
 
-                        grid.setAlignment(Pos.CENTER_RIGHT);
-                        HBox hbox = new HBox(root, grid);
+                        game.grid.setAlignment(Pos.CENTER_RIGHT);
+                        HBox hbox = new HBox(root3, game.grid);
                         hbox.setBackground(new Background(background));
-
-
 
 
                         // grid for the map
@@ -192,14 +207,14 @@ public class ViewManager {
 
                         int columns = 12;
 
-                        for(int i = 0; i < columns; i++) {
+                        for (int i = 0; i < columns; i++) {
                             ColumnConstraints column = new ColumnConstraints(55);
-                            grid.getColumnConstraints().add(column);
+                            game.grid.getColumnConstraints().add(column);
 
                         }
-                        for(int i = 0; i < rows; i++) {
+                        for (int i = 0; i < rows; i++) {
                             RowConstraints row = new RowConstraints(55);
-                            grid.getRowConstraints().add(row);
+                            game.grid.getRowConstraints().add(row);
                         }
 
 
@@ -220,8 +235,7 @@ public class ViewManager {
                         });
                         */
 
-                        grid.setStyle("-fx-grid-lines-visible: true");
-
+                        game.grid.setStyle("-fx-grid-lines-visible: true");
 
 
                         //Buttons-Labels -  HUD ---------------------------------------------->
@@ -230,42 +244,43 @@ public class ViewManager {
                         Units.setLayoutX(0);
                         Units.setLayoutY(0);
                         Units.setFont(new Font("Cardinal", 30));
-                        root.getChildren().add(Units);
-                        if (foldmuvesAmount != 0){
+                        root3.getChildren().add(Units);
+                        if (foldmuvesAmount != 0) {
                             SpecButton fmb = new SpecButton("F");
+                            specButtons.add(fmb);
                             fmb.setLayoutX(0);
                             fmb.setLayoutY(100);
-                            root.getChildren().add(fmb);
+                            root3.getChildren().add(fmb);
                             fmb.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
 
-                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                         @Override
                                         public void handle(MouseEvent mouseEvent) {
 
-                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125) {
                                                 return;
                                             }
-                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
-                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            int tmpy = (int) Math.floor((mouseEvent.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(mouseEvent.getX() / 55);
                                             foldmuves.x_pos = tmpx;
                                             foldmuves.y_pos = tmpy;
-                                            if (foldmuves.x_pos == ijasz.x_pos && foldmuves.y_pos == ijasz.y_pos){
+                                            if (foldmuves.x_pos == ijasz.x_pos && foldmuves.y_pos == ijasz.y_pos) {
                                                 return;
                                             }
-                                            if (foldmuves.x_pos == griff.x_pos && foldmuves.y_pos == griff.y_pos){
+                                            if (foldmuves.x_pos == griff.x_pos && foldmuves.y_pos == griff.y_pos) {
                                                 return;
                                             }
-                                            if (foldmuves.x_pos == cica.x_pos && foldmuves.y_pos == cica.y_pos){
+                                            if (foldmuves.x_pos == cica.x_pos && foldmuves.y_pos == cica.y_pos) {
                                                 return;
                                             }
-                                            if (foldmuves.x_pos == panceloscica.x_pos && foldmuves.y_pos == panceloscica.y_pos){
-                                                 return;
+                                            if (foldmuves.x_pos == panceloscica.x_pos && foldmuves.y_pos == panceloscica.y_pos) {
+                                                return;
                                             }
-                                            if (tmpx < 2 ){
+                                            if (tmpx < 2) {
 
-                                                addPictureToCell(foldmuves.x_pos, foldmuves.y_pos,  foldmuves.getImage());
+                                                addPictureToCell(foldmuves.x_pos, foldmuves.y_pos, foldmuves.getImage());
 
                                                 System.out.println("Földműves elhelyezve a " + foldmuves.x_pos + " : " + foldmuves.y_pos + " Koordinátára.");
                                                 System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
@@ -273,9 +288,10 @@ public class ViewManager {
                                                 System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
                                                 System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 fmb.setVisible(false);
-                                                grid.setOnMouseClicked(null);
+                                                specButtons.remove(fmb);
+                                                IsPlayerReadyToStart();
+                                                game.grid.setOnMouseClicked(null);
                                             }
-
 
 
                                         }
@@ -286,53 +302,55 @@ public class ViewManager {
                             });
 
 
-
                         }
-                        if (ijaszAmount != 0){
+                        if (ijaszAmount != 0) {
                             SpecButton ijb = new SpecButton("I");
+                            specButtons.add(ijb);
                             ijb.setLayoutX(55);
                             ijb.setLayoutY(100);
-                            root.getChildren().add(ijb);
+                            root3.getChildren().add(ijb);
                             ijb.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
 
-                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                         @Override
                                         public void handle(MouseEvent mouseEvent) {
 
-                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125) {
                                                 return;
                                             }
-                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
-                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            int tmpy = (int) Math.floor((mouseEvent.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(mouseEvent.getX() / 55);
                                             ijasz.x_pos = tmpx;
                                             ijasz.y_pos = tmpy;
-                                            if (ijasz.x_pos == foldmuves.x_pos && ijasz.y_pos == foldmuves.y_pos){
+                                            if (ijasz.x_pos == foldmuves.x_pos && ijasz.y_pos == foldmuves.y_pos) {
                                                 return;
                                             }
-                                            if (ijasz.x_pos == griff.x_pos && ijasz.y_pos == griff.y_pos){
+                                            if (ijasz.x_pos == griff.x_pos && ijasz.y_pos == griff.y_pos) {
                                                 return;
                                             }
-                                            if (ijasz.x_pos == cica.x_pos && ijasz.y_pos == cica.y_pos){
+                                            if (ijasz.x_pos == cica.x_pos && ijasz.y_pos == cica.y_pos) {
                                                 return;
                                             }
-                                            if (ijasz.x_pos == panceloscica.x_pos && ijasz.y_pos == panceloscica.y_pos){
+                                            if (ijasz.x_pos == panceloscica.x_pos && ijasz.y_pos == panceloscica.y_pos) {
                                                 return;
                                             }
-                                            if (tmpx < 2 ){
+                                            if (tmpx < 2) {
 
-                                                addPictureToCell(ijasz.x_pos, ijasz.y_pos,  ijasz.getImage());
+                                                addPictureToCell(ijasz.x_pos, ijasz.y_pos, ijasz.getImage());
 
-                                                System.out.println("Ijász elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára."); System.out.println("Földműves elhelyezve a " + foldmuves.x_pos + " : " + foldmuves.y_pos + " Koordinátára.");
+                                                System.out.println("Ijász elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                System.out.println("Földműves elhelyezve a " + foldmuves.x_pos + " : " + foldmuves.y_pos + " Koordinátára.");
                                                 System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
                                                 System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
                                                 System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
                                                 System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 ijb.setVisible(false);
-                                                grid.setOnMouseClicked(null);
+                                                specButtons.remove(ijb);
+                                                IsPlayerReadyToStart();
+                                                game.grid.setOnMouseClicked(null);
                                             }
-
 
 
                                         }
@@ -342,41 +360,42 @@ public class ViewManager {
                                 }
                             });
                         }
-                        if (griffAmount != 0){
+                        if (griffAmount != 0) {
                             SpecButton gb = new SpecButton("G");
+                            specButtons.add(gb);
                             gb.setLayoutX(110);
                             gb.setLayoutY(100);
-                            root.getChildren().add(gb);
+                            root3.getChildren().add(gb);
                             gb.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
 
-                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                         @Override
                                         public void handle(MouseEvent mouseEvent) {
 
-                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125) {
                                                 return;
                                             }
-                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
-                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            int tmpy = (int) Math.floor((mouseEvent.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(mouseEvent.getX() / 55);
                                             griff.x_pos = tmpx;
                                             griff.y_pos = tmpy;
-                                            if (griff.x_pos == foldmuves.x_pos && griff.y_pos == foldmuves.y_pos){
+                                            if (griff.x_pos == foldmuves.x_pos && griff.y_pos == foldmuves.y_pos) {
                                                 return;
                                             }
-                                            if (griff.x_pos == ijasz.x_pos && griff.y_pos == ijasz.y_pos){
+                                            if (griff.x_pos == ijasz.x_pos && griff.y_pos == ijasz.y_pos) {
                                                 return;
                                             }
-                                            if (griff.x_pos == cica.x_pos && griff.y_pos == cica.y_pos){
+                                            if (griff.x_pos == cica.x_pos && griff.y_pos == cica.y_pos) {
                                                 return;
                                             }
-                                            if (griff.x_pos == panceloscica.x_pos && griff.y_pos == panceloscica.y_pos){
+                                            if (griff.x_pos == panceloscica.x_pos && griff.y_pos == panceloscica.y_pos) {
                                                 return;
                                             }
-                                            if (tmpx < 2 ){
+                                            if (tmpx < 2) {
 
-                                                addPictureToCell(griff.x_pos, griff.y_pos,  griff.getImage());
+                                                addPictureToCell(griff.x_pos, griff.y_pos, griff.getImage());
 
                                                 System.out.println("Griff elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
                                                 System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
@@ -384,9 +403,10 @@ public class ViewManager {
                                                 System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
                                                 System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 gb.setVisible(false);
-                                                grid.setOnMouseClicked(null);
+                                                specButtons.remove(gb);
+                                                IsPlayerReadyToStart();
+                                                game.grid.setOnMouseClicked(null);
                                             }
-
 
 
                                         }
@@ -396,41 +416,42 @@ public class ViewManager {
                                 }
                             });
                         }
-                        if (cicaAmount != 0){
+                        if (cicaAmount != 0) {
                             SpecButton cb = new SpecButton("C");
+                            specButtons.add(cb);
                             cb.setLayoutX(165);
                             cb.setLayoutY(100);
-                            root.getChildren().add(cb);
+                            root3.getChildren().add(cb);
                             cb.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
 
-                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                         @Override
                                         public void handle(MouseEvent mouseEvent) {
 
-                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125) {
                                                 return;
                                             }
-                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
-                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            int tmpy = (int) Math.floor((mouseEvent.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(mouseEvent.getX() / 55);
                                             cica.x_pos = tmpx;
                                             cica.y_pos = tmpy;
-                                            if (cica.x_pos == foldmuves.x_pos && cica.y_pos == foldmuves.y_pos){
+                                            if (cica.x_pos == foldmuves.x_pos && cica.y_pos == foldmuves.y_pos) {
                                                 return;
                                             }
-                                            if (cica.x_pos == ijasz.x_pos && cica.y_pos == ijasz.y_pos){
+                                            if (cica.x_pos == ijasz.x_pos && cica.y_pos == ijasz.y_pos) {
                                                 return;
                                             }
-                                            if (cica.x_pos == griff.x_pos && cica.y_pos == griff.y_pos){
+                                            if (cica.x_pos == griff.x_pos && cica.y_pos == griff.y_pos) {
                                                 return;
                                             }
-                                            if (cica.x_pos == panceloscica.x_pos && cica.y_pos == panceloscica.y_pos){
+                                            if (cica.x_pos == panceloscica.x_pos && cica.y_pos == panceloscica.y_pos) {
                                                 return;
                                             }
-                                            if (tmpx < 2 ){
+                                            if (tmpx < 2) {
 
-                                                addPictureToCell(cica.x_pos, cica.y_pos,  cica.getImage());
+                                                addPictureToCell(cica.x_pos, cica.y_pos, cica.getImage());
 
                                                 System.out.println("Cica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
                                                 System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
@@ -438,9 +459,10 @@ public class ViewManager {
                                                 System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
                                                 System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 cb.setVisible(false);
-                                                grid.setOnMouseClicked(null);
+                                                specButtons.remove(cb);
+                                                IsPlayerReadyToStart();
+                                                game.grid.setOnMouseClicked(null);
                                             }
-
 
 
                                         }
@@ -450,50 +472,52 @@ public class ViewManager {
                                 }
                             });
                         }
-                        if (armourdercicaamount != 0){
+                        if (armourdercicaamount != 0) {
                             SpecButton acb = new SpecButton("P");
+                            specButtons.add(acb);
                             acb.setLayoutX(220);
                             acb.setLayoutY(100);
-                            root.getChildren().add(acb);
+                            root3.getChildren().add(acb);
                             acb.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
 
-                                    grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                         @Override
                                         public void handle(MouseEvent mouseEvent) {
 
-                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125){
+                                            if (mouseEvent.getY() > 675 || mouseEvent.getY() < 125) {
                                                 return;
                                             }
-                                            int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
-                                            int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            int tmpy = (int) Math.floor((mouseEvent.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(mouseEvent.getX() / 55);
                                             panceloscica.x_pos = tmpx;
                                             panceloscica.y_pos = tmpy;
-                                            if (panceloscica.x_pos == foldmuves.x_pos && panceloscica.y_pos == foldmuves.y_pos){
+                                            if (panceloscica.x_pos == foldmuves.x_pos && panceloscica.y_pos == foldmuves.y_pos) {
                                                 return;
                                             }
-                                            if (panceloscica.x_pos == ijasz.x_pos && panceloscica.y_pos == ijasz.y_pos){
+                                            if (panceloscica.x_pos == ijasz.x_pos && panceloscica.y_pos == ijasz.y_pos) {
                                                 return;
                                             }
-                                            if (panceloscica.x_pos == griff.x_pos && panceloscica.y_pos == griff.y_pos){
+                                            if (panceloscica.x_pos == griff.x_pos && panceloscica.y_pos == griff.y_pos) {
                                                 return;
                                             }
-                                            if (panceloscica.x_pos == cica.x_pos && cica.y_pos == panceloscica.y_pos){
+                                            if (panceloscica.x_pos == cica.x_pos && cica.y_pos == panceloscica.y_pos) {
                                                 return;
                                             }
-                                            if (tmpx < 2 ){
+                                            if (tmpx < 2) {
 
-                                                addPictureToCell(panceloscica.x_pos, panceloscica.y_pos,  panceloscica.getImage());
+                                                addPictureToCell(panceloscica.x_pos, panceloscica.y_pos, panceloscica.getImage());
                                                 System.out.println("PáncélosCica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
                                                 System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
                                                 System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
                                                 System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
                                                 System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
                                                 acb.setVisible(false);
-                                                grid.setOnMouseClicked(null);
+                                                specButtons.remove(acb);
+                                                IsPlayerReadyToStart();
+                                                game.grid.setOnMouseClicked(null);
                                             }
-
 
 
                                         }
@@ -513,53 +537,52 @@ public class ViewManager {
                         manapointsamount.setLayoutY(750);
                         manapointsamount.setFont(new Font("Cardinal", 30));
 
-                        root.getChildren().addAll(manapoints, manapointsamount);
+                        root3.getChildren().addAll(manapoints, manapointsamount);
                         //Magics
                         Label Magics = new Label("Varázslatok kiválasztása:");
                         Magics.setLayoutX(0);
                         Magics.setLayoutY(300);
                         Magics.setFont(new Font("Cardinal", 30));
-                        root.getChildren().add(Magics);
+                        root3.getChildren().add(Magics);
                         int MagLayy = 400;
-                        if (villamcsapasamount != 0){
+                        if (villamcsapasamount != 0) {
                             SpecButton VillamcsapasButton = new SpecButton("V");
                             VillamcsapasButton.setLayoutX(0);
                             VillamcsapasButton.setLayoutY(MagLayy);
-                            root.getChildren().add(VillamcsapasButton);
+                            root3.getChildren().add(VillamcsapasButton);
                         }
-                        if (tuzlabdaamount != 0){
+                        if (tuzlabdaamount != 0) {
                             SpecButton TuzlabdaButton = new SpecButton("T");
                             TuzlabdaButton.setLayoutX(60);
                             TuzlabdaButton.setLayoutY(MagLayy);
-                            root.getChildren().add(TuzlabdaButton);
+                            root3.getChildren().add(TuzlabdaButton);
                         }
-                        if (feltamasztasamount != 0){
+                        if (feltamasztasamount != 0) {
                             SpecButton FeltamasztasButton = new SpecButton("+");
                             FeltamasztasButton.setLayoutX(120);
                             FeltamasztasButton.setLayoutY(MagLayy);
-                            root.getChildren().add(FeltamasztasButton);
+                            root3.getChildren().add(FeltamasztasButton);
                         }
-                        if (bonusamount != 0){
+                        if (bonusamount != 0) {
                             SpecButton BonusButton = new SpecButton("B");
                             BonusButton.setLayoutX(180);
                             BonusButton.setLayoutY(MagLayy);
-                            root.getChildren().add(BonusButton);
+                            root3.getChildren().add(BonusButton);
                         }
-                        if (doublehealamount != 0){
+                        if (doublehealamount != 0) {
                             SpecButton DoubleHealButton = new SpecButton("H");
                             DoubleHealButton.setLayoutX(240);
                             DoubleHealButton.setLayoutY(MagLayy);
-                            root.getChildren().add(DoubleHealButton);
+                            root3.getChildren().add(DoubleHealButton);
                         }
 
                         //magics end
                         //Buttons HUD end ------------------------------------------>
 
 
-
-
                         mainStage.setScene(new Scene(hbox, WIDTH, HEIGHT));
                         //mainStage.setFullScreen(true);
+
 
                     }
                 });
@@ -580,7 +603,7 @@ public class ViewManager {
                 Label TamadasLabel = new Label("Támadás:");
                 TamadasLabel.setLayoutX(300);
                 TamadasLabel.setLayoutY(Labely);
-                TamadasLabel.setFont(new Font("Cardinal",20));
+                TamadasLabel.setFont(new Font("Cardinal", 20));
                 Label TamadasLabelAMount = new Label("1");
                 TamadasLabelAMount.setLayoutX(390);
                 TamadasLabelAMount.setLayoutY(Labely);
@@ -592,15 +615,14 @@ public class ViewManager {
                 TamadasButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofTamadas || (Integer.parseInt(TamadasLabelAMount.getText()) == 10)){
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofTamadas || (Integer.parseInt(TamadasLabelAMount.getText()) == 10)) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - Globals.priceofTamadas) + "");
                             int TamadasValue = Integer.parseInt(TamadasLabelAMount.getText());
-                            TamadasLabelAMount.setText("" + (TamadasValue+1)+ "");
-                            Globals.priceofTamadas = (int) (Math.ceil(Globals.priceofTamadas *0.1) + Globals.priceofTamadas);
+                            TamadasLabelAMount.setText("" + (TamadasValue + 1) + "");
+                            Globals.priceofTamadas = (int) (Math.ceil(Globals.priceofTamadas * 0.1) + Globals.priceofTamadas);
                             System.out.println("Támadás ára:" + Globals.priceofTamadas);
 
                         }
@@ -611,7 +633,7 @@ public class ViewManager {
                 Label VedekezesLabel = new Label("Védekezés:");
                 VedekezesLabel.setLayoutX(450);
                 VedekezesLabel.setLayoutY(Labely);
-                VedekezesLabel.setFont(new Font("Cardinal",20));
+                VedekezesLabel.setFont(new Font("Cardinal", 20));
                 Label VedekezesLabelAmount = new Label("1");
                 VedekezesLabelAmount.setLayoutX(560);
                 VedekezesLabelAmount.setLayoutY(Labely);
@@ -622,14 +644,13 @@ public class ViewManager {
                 VedekezesButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofVedekezes || (Integer.parseInt(VedekezesLabelAmount.getText()) == 10)){
-                        }
-                        else{
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofVedekezes || (Integer.parseInt(VedekezesLabelAmount.getText()) == 10)) {
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - Globals.priceofVedekezes) + "");
                             int VedekezesValue = Integer.parseInt(VedekezesLabelAmount.getText());
-                            VedekezesLabelAmount.setText("" + (VedekezesValue+1)+ "");
-                            Globals.priceofVedekezes = (int) (Math.ceil(Globals.priceofVedekezes *0.1) + Globals.priceofVedekezes);
+                            VedekezesLabelAmount.setText("" + (VedekezesValue + 1) + "");
+                            Globals.priceofVedekezes = (int) (Math.ceil(Globals.priceofVedekezes * 0.1) + Globals.priceofVedekezes);
                             System.out.println("Védekezés ára:" + Globals.priceofVedekezes);
                         }
                     }
@@ -639,7 +660,7 @@ public class ViewManager {
                 Label VarazseroLabel = new Label("Varázserő:");
                 VarazseroLabel.setLayoutX(600);
                 VarazseroLabel.setLayoutY(Labely);
-                VarazseroLabel.setFont(new Font("Cardinal",20));
+                VarazseroLabel.setFont(new Font("Cardinal", 20));
                 Label VarazseroLabelAmount = new Label("1");
                 VarazseroLabelAmount.setLayoutX(700);
                 VarazseroLabelAmount.setLayoutY(Labely);
@@ -650,14 +671,13 @@ public class ViewManager {
                 VarazseroButtonIncrease.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofVarazsero || (Integer.parseInt(VarazseroLabelAmount.getText()) == 10)){
-                        }
-                        else{
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofVarazsero || (Integer.parseInt(VarazseroLabelAmount.getText()) == 10)) {
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - Globals.priceofVarazsero) + "");
                             int VarazseroValue = Integer.parseInt(VarazseroLabelAmount.getText());
-                            VarazseroLabelAmount.setText("" + (VarazseroValue+1)+ "");
-                            Globals.priceofVarazsero = (int) (Math.ceil(Globals.priceofVarazsero *0.1) + Globals.priceofVarazsero);
+                            VarazseroLabelAmount.setText("" + (VarazseroValue + 1) + "");
+                            Globals.priceofVarazsero = (int) (Math.ceil(Globals.priceofVarazsero * 0.1) + Globals.priceofVarazsero);
                             System.out.println("Varázserő ára:" + Globals.priceofVarazsero);
                         }
                     }
@@ -667,7 +687,7 @@ public class ViewManager {
                 Label TudasLabel = new Label("Tudás:");
                 TudasLabel.setLayoutX(750);
                 TudasLabel.setLayoutY(Labely);
-                TudasLabel.setFont(new Font("Cardinal",20));
+                TudasLabel.setFont(new Font("Cardinal", 20));
                 Label TudasLabelAmount = new Label("1");
                 TudasLabelAmount.setLayoutX(830);
                 TudasLabelAmount.setLayoutY(Labely);
@@ -679,15 +699,14 @@ public class ViewManager {
                     @Override
                     public void handle(ActionEvent actionEvent) {
 
-                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofTudas || (Integer.parseInt(TudasLabelAmount.getText()) == 10)){
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofTudas || (Integer.parseInt(TudasLabelAmount.getText()) == 10)) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - Globals.priceofTudas) + "");
                             int TudasValue = Integer.parseInt(TudasLabelAmount.getText());
-                            TudasLabelAmount.setText("" + (TudasValue+1)+ "");
-                            Globals.priceofTudas = (int) (Math.ceil(Globals.priceofTudas *0.1) + Globals.priceofTudas);
+                            TudasLabelAmount.setText("" + (TudasValue + 1) + "");
+                            Globals.priceofTudas = (int) (Math.ceil(Globals.priceofTudas * 0.1) + Globals.priceofTudas);
                             System.out.println("Varázserő ára:" + Globals.priceofTudas);
                         }
                     }
@@ -697,7 +716,7 @@ public class ViewManager {
                 Label MoralLabel = new Label("Morál:");
                 MoralLabel.setLayoutX(900);
                 MoralLabel.setLayoutY(Labely);
-                MoralLabel.setFont(new Font("Cardinal",20));
+                MoralLabel.setFont(new Font("Cardinal", 20));
                 Label MoralLabelAmount = new Label("1");
                 MoralLabelAmount.setLayoutX(970);
                 MoralLabelAmount.setLayoutY(Labely);
@@ -709,15 +728,14 @@ public class ViewManager {
                     @Override
                     public void handle(ActionEvent actionEvent) {
 
-                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofMoral || (Integer.parseInt(MoralLabelAmount.getText()) == 10)){
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofMoral || (Integer.parseInt(MoralLabelAmount.getText()) == 10)) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - Globals.priceofMoral) + "");
                             int MoralValue = Integer.parseInt(MoralLabelAmount.getText());
-                            MoralLabelAmount.setText("" + (MoralValue+1)+ "");
-                            Globals.priceofMoral = (int) (Math.ceil(Globals.priceofMoral *0.1) + Globals.priceofMoral);
+                            MoralLabelAmount.setText("" + (MoralValue + 1) + "");
+                            Globals.priceofMoral = (int) (Math.ceil(Globals.priceofMoral * 0.1) + Globals.priceofMoral);
                             System.out.println("Morál ára:" + Globals.priceofMoral);
                         }
                     }
@@ -728,7 +746,7 @@ public class ViewManager {
                 Label SzerencseLabel = new Label("Szerencse:");
                 SzerencseLabel.setLayoutX(1050);
                 SzerencseLabel.setLayoutY(Labely);
-                SzerencseLabel.setFont(new Font("Cardinal",20));
+                SzerencseLabel.setFont(new Font("Cardinal", 20));
                 Label SzerencseLabelAmount = new Label("1");
                 SzerencseLabelAmount.setLayoutX(1150);
                 SzerencseLabelAmount.setLayoutY(Labely);
@@ -740,23 +758,22 @@ public class ViewManager {
                     @Override
                     public void handle(ActionEvent actionEvent) {
 
-                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofSzerencse || (Integer.parseInt(SzerencseLabelAmount.getText()) == 10)){
+                        if (Integer.parseInt(GoldAmount.getText()) < Globals.priceofSzerencse || (Integer.parseInt(SzerencseLabelAmount.getText()) == 10)) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - Globals.priceofSzerencse) + "");
                             int SzerencseValue = Integer.parseInt(SzerencseLabelAmount.getText());
-                            SzerencseLabelAmount.setText("" + (SzerencseValue+1)+ "");
+                            SzerencseLabelAmount.setText("" + (SzerencseValue + 1) + "");
 
-                            Globals.priceofSzerencse= (int) (Math.ceil(Globals.priceofSzerencse *0.1) + Globals.priceofSzerencse);
+                            Globals.priceofSzerencse = (int) (Math.ceil(Globals.priceofSzerencse * 0.1) + Globals.priceofSzerencse);
                             System.out.println("Szerencse ára:" + Globals.priceofSzerencse);
                         }
                     }
                 });
                 //  Szerencse End --------------------------->
                 root.getChildren().addAll(TamadasLabel, VedekezesLabel, VarazseroLabel, TudasLabel, MoralLabel, SzerencseLabel);
-                root.getChildren().addAll(TamadasLabelAMount, VedekezesLabelAmount, VarazseroLabelAmount ,TudasLabelAmount, MoralLabelAmount, SzerencseLabelAmount);
+                root.getChildren().addAll(TamadasLabelAMount, VedekezesLabelAmount, VarazseroLabelAmount, TudasLabelAmount, MoralLabelAmount, SzerencseLabelAmount);
                 root.getChildren().addAll(TamadasButtonIncrease, VedekezesButtonIncrease, VarazseroButtonIncrease, TudasButtonIncrease, MoralButtonIncrease, SzerencseButtonIncrease);
                 //Specifications of the Hero end
                 Label mainLabel = new Label("HARCRA FEL!");
@@ -768,19 +785,19 @@ public class ViewManager {
                 Label UnitAmount = new Label("0");
                 //Foldmuves
                 Label Foldmuves = new Label("Földműves: ");
-                Label FoldmuvesAmount = new Label("0");
+                FoldmuvesAmount = new Label("0");
                 //Ijasz
                 Label Ijasz = new Label("Ijász: ");
-                Label IjaszAmount = new Label("0");
+                IjaszAmount = new Label("0");
                 //Sarkany
                 Label Sarkany = new Label("Griff: ");
-                Label SarkanyAmount = new Label("0");
+                SarkanyAmount = new Label("0");
                 //Cica
                 Label Cica = new Label("Cica: ");
-                Label CicaAmount = new Label("0");
+                CicaAmount = new Label("0");
                 //Páncélos Cica
                 Label ArmouredCica = new Label("Páncélos Cica");
-                Label ArmnouredCicaAmount = new Label("0");
+                ArmnouredCicaAmount = new Label("0");
 
 
                 //Magic Labels
@@ -971,7 +988,6 @@ public class ViewManager {
                 //Units end
 
 
-
                 //Buttons for the units ---------------------------------------------------------->
                 //Földműves gomb
                 HeroesOfMightButton FoldmuvesButton = new HeroesOfMightButton("Földm.");
@@ -984,21 +1000,21 @@ public class ViewManager {
 
                         startGameButton.setVisible(true);
 
-                        if (Integer.parseInt(GoldAmount.getText()) < 2){
+                        if (Integer.parseInt(GoldAmount.getText()) < 2) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 2) + "");
                             int unitvalue = Integer.parseInt(UnitAmount.getText());
-                            UnitAmount.setText("" + (unitvalue+1)+ "");
+                            UnitAmount.setText("" + (unitvalue + 1) + "");
                             int Foldmuvesvalue = Integer.parseInt(FoldmuvesAmount.getText());
-                            FoldmuvesAmount.setText("" + (Foldmuvesvalue+1) + "");
+                            FoldmuvesAmount.setText("" + (Foldmuvesvalue + 1) + "");
                             foldmuvesAmount++;
 
                         }
                     }
                 });
+
                 FoldmuvesButton.setLayoutX(350);
                 FoldmuvesButton.setLayoutY(150);
 
@@ -1012,21 +1028,21 @@ public class ViewManager {
                     public void handle(ActionEvent actionEvent) {
 
                         startGameButton.setVisible(true);
-                        if (Integer.parseInt(GoldAmount.getText()) < 6){
+                        if (Integer.parseInt(GoldAmount.getText()) < 6) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 6) + "");
                             int unitvalue = Integer.parseInt(UnitAmount.getText());
-                            UnitAmount.setText("" + (unitvalue+1)+ "");
+                            UnitAmount.setText("" + (unitvalue + 1) + "");
                             int ijaszvalue = Integer.parseInt(IjaszAmount.getText());
-                            IjaszAmount.setText("" + (ijaszvalue+1) + "");
+                            IjaszAmount.setText("" + (ijaszvalue + 1) + "");
                             ijaszAmount++;
 
                         }
                     }
                 });
+
 
                 IjaszButton.setLayoutX(350);
                 IjaszButton.setLayoutY(250);
@@ -1041,21 +1057,21 @@ public class ViewManager {
                     public void handle(ActionEvent actionEvent) {
 
                         startGameButton.setVisible(true);
-                        if (Integer.parseInt(GoldAmount.getText()) < 15){
+                        if (Integer.parseInt(GoldAmount.getText()) < 15) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 15) + "");
                             int unitvalue = Integer.parseInt(UnitAmount.getText());
-                            UnitAmount.setText("" + (unitvalue+1)+ "");
+                            UnitAmount.setText("" + (unitvalue + 1) + "");
                             int Sarkanyvalue = Integer.parseInt(SarkanyAmount.getText());
-                            SarkanyAmount.setText("" + (Sarkanyvalue+1) + "");
+                            SarkanyAmount.setText("" + (Sarkanyvalue + 1) + "");
                             griffAmount++;
 
                         }
                     }
                 });
+
                 SarkanyButton.setLayoutX(350);
                 SarkanyButton.setLayoutY(350);
 
@@ -1069,21 +1085,21 @@ public class ViewManager {
                     public void handle(ActionEvent actionEvent) {
 
                         startGameButton.setVisible(true);
-                        if (Integer.parseInt(GoldAmount.getText()) < 20){
+                        if (Integer.parseInt(GoldAmount.getText()) < 20) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 20) + "");
                             int unitvalue = Integer.parseInt(UnitAmount.getText());
-                            UnitAmount.setText("" + (unitvalue+1)+ "");
+                            UnitAmount.setText("" + (unitvalue + 1) + "");
                             int Cicavalue = Integer.parseInt(CicaAmount.getText());
-                            CicaAmount.setText("" + (Cicavalue+1) + "");
+                            CicaAmount.setText("" + (Cicavalue + 1) + "");
                             cicaAmount++;
 
                         }
                     }
                 });
+
                 CicaButton.setLayoutX(350);
                 CicaButton.setLayoutY(450);
 
@@ -1097,24 +1113,23 @@ public class ViewManager {
                     public void handle(ActionEvent actionEvent) {
 
                         startGameButton.setVisible(true);
-                        if (Integer.parseInt(GoldAmount.getText()) < 50){
+                        if (Integer.parseInt(GoldAmount.getText()) < 50) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 50) + "");
                             int unitvalue = Integer.parseInt(UnitAmount.getText());
-                            UnitAmount.setText("" + (unitvalue+1)+ "");
+                            UnitAmount.setText("" + (unitvalue + 1) + "");
                             int ArmouredCicavalue = Integer.parseInt(ArmnouredCicaAmount.getText());
-                            ArmnouredCicaAmount.setText("" + (ArmouredCicavalue+1) + "");
+                            ArmnouredCicaAmount.setText("" + (ArmouredCicavalue + 1) + "");
                             armourdercicaamount++;
 
                         }
                     }
                 });
+
                 ArmouredCatButton.setLayoutX(350);
                 ArmouredCatButton.setLayoutY(550);
-
 
 
                 //Varázserő Gombok --------------------------------------------->
@@ -1128,14 +1143,13 @@ public class ViewManager {
                 TuzlabdaButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < 120){
+                        if (Integer.parseInt(GoldAmount.getText()) < 120) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 120) + "");
                             int tuzvalue = Integer.parseInt(TuzlabdaAmount.getText());
-                            TuzlabdaAmount.setText("" + (tuzvalue+1)+ "");
+                            TuzlabdaAmount.setText("" + (tuzvalue + 1) + "");
                             tuzlabdaamount++;
                         }
                     }
@@ -1152,14 +1166,13 @@ public class ViewManager {
                 VillamcsapasButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < 60){
+                        if (Integer.parseInt(GoldAmount.getText()) < 60) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 60) + "");
                             int Villamvalue = Integer.parseInt(VillamcsapasAmount.getText());
-                            VillamcsapasAmount.setText("" + (Villamvalue+1)+ "");
+                            VillamcsapasAmount.setText("" + (Villamvalue + 1) + "");
                             villamcsapasamount++;
                         }
                     }
@@ -1176,13 +1189,12 @@ public class ViewManager {
                 FeltamasztasButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < 120){
-                        }
-                        else{
+                        if (Integer.parseInt(GoldAmount.getText()) < 120) {
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 120) + "");
                             int Feltamadasvalue = Integer.parseInt(FeltamadasAmount.getText());
-                            FeltamadasAmount.setText("" + (Feltamadasvalue+1)+ "");
+                            FeltamadasAmount.setText("" + (Feltamadasvalue + 1) + "");
                             feltamasztasamount++;
                         }
                     }
@@ -1198,14 +1210,13 @@ public class ViewManager {
                 TraitBonusButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < 200){
+                        if (Integer.parseInt(GoldAmount.getText()) < 200) {
 
-                        }
-                        else{
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 200) + "");
                             int Bonusvalue = Integer.parseInt(BonusAmount.getText());
-                            BonusAmount.setText("" + (Bonusvalue+1)+ "");
+                            BonusAmount.setText("" + (Bonusvalue + 1) + "");
                             bonusamount++;
                         }
                     }
@@ -1221,13 +1232,12 @@ public class ViewManager {
                 DoubleHealButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        if (Integer.parseInt(GoldAmount.getText()) < 200){
-                        }
-                        else{
+                        if (Integer.parseInt(GoldAmount.getText()) < 200) {
+                        } else {
                             int gvalue = Integer.parseInt(GoldAmount.getText());
                             GoldAmount.setText("" + (gvalue - 200) + "");
                             int DoublehealValue = Integer.parseInt(DoubleHealAmount.getText());
-                            DoubleHealAmount.setText("" + (DoublehealValue+1)+ "");
+                            DoubleHealAmount.setText("" + (DoublehealValue + 1) + "");
                             doublehealamount++;
                         }
                     }
@@ -1237,18 +1247,20 @@ public class ViewManager {
                 DoubleHealButton.setLayoutY(550);
 
 
-                Image backgroundImage = new Image("grass.png",true);
-                root.setBackground(new Background(new BackgroundImage(backgroundImage,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
+                Image backgroundImage = new Image("grass.png", true);
+                root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
 
                 root.getChildren().addAll(mainLabel, GoldLabel, GoldAmount, CurrentUnits, UnitAmount, Foldmuves, FoldmuvesAmount, Ijasz, IjaszAmount, Sarkany, SarkanyAmount, Cica, CicaAmount, ArmouredCica, ArmnouredCicaAmount, UnitLabel, MagicLabel); //Labels added
                 root.getChildren().addAll(exitButtonFromGame, startGameButton, FoldmuvesButton, IjaszButton, SarkanyButton, CicaButton, ArmouredCatButton, TuzlabdaButton, VillamcsapasButton, FeltamasztasButton, TraitBonusButton, DoubleHealButton); //Buttons added
-                Globals.primaryStage.setScene(new Scene(root, WIDTH , HEIGHT));
+                Globals.primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
             }
+
+            // ide gechi a jatekot
         });
         addMenuButton(startButton);
     }
 
-    private void createModeButton(){
+    private void createModeButton() {
         HeroesOfMightButton ModeButton = new HeroesOfMightButton("MODE");
         ModeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -1275,7 +1287,7 @@ public class ViewManager {
                 //medium button
                 HeroesOfMightButton mediumButton = new HeroesOfMightButton("MEDIUM");
                 mediumButton.setLayoutX(MENU_BUTTONS_START_X);
-                mediumButton.setLayoutY(MENU_BUTTONS_START_Y+150);
+                mediumButton.setLayoutY(MENU_BUTTONS_START_Y + 150);
                 mediumButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
@@ -1291,7 +1303,7 @@ public class ViewManager {
                 //hard button
                 HeroesOfMightButton hardButton = new HeroesOfMightButton("HARD");
                 hardButton.setLayoutX(MENU_BUTTONS_START_X);
-                hardButton.setLayoutY(MENU_BUTTONS_START_Y+300);
+                hardButton.setLayoutY(MENU_BUTTONS_START_Y + 300);
                 hardButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
@@ -1302,32 +1314,34 @@ public class ViewManager {
                     }
                 });
                 root.getChildren().add(hardButton);
-                Image backgroundImage = new Image("grass.png",true);
-                root.setBackground(new Background(new BackgroundImage(backgroundImage,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
-                Globals.primaryStage.setScene(new Scene(root, WIDTH , HEIGHT));
+                Image backgroundImage = new Image("grass.png", true);
+                root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
+                Globals.primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
             }
         });
         addMenuButton(ModeButton);
     }
-    private void createHowToButton(){
+
+    private void createHowToButton() {
         HeroesOfMightButton HowToButton = new HeroesOfMightButton("HOW TO");
         HowToButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Scene menu = Globals.primaryStage.getScene();
                 Pane root = new Pane();
-                Image backgroundImage = new Image("grass.png",true);
-                root.setBackground(new Background(new BackgroundImage(backgroundImage,BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
+                Image backgroundImage = new Image("grass.png", true);
+                root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
                 Text text = new Text("random szöveg");
                 root.getChildren().add(text);
 
-                Globals.primaryStage.setScene(new Scene(root, WIDTH , HEIGHT));
+                Globals.primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
 
-                }
+            }
         });
         addMenuButton(HowToButton);
     }
-    private void createExitButton(){
+
+    private void createExitButton() {
         HeroesOfMightButton ExitButton = new HeroesOfMightButton("EXIT");
         ExitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -1339,16 +1353,15 @@ public class ViewManager {
     }
 
 
-
-    private void createBackground(){
-        Image backgroundImage = new Image("grass.png",true);
+    private void createBackground() {
+        Image backgroundImage = new Image("grass.png", true);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         mainPane.setBackground(new Background(background));
 
 
     }
 
-    private void setDifficultyBackground(){
+    private void setDifficultyBackground() {
         Image easyImage = new Image("easy.png");
         Image mediumImage = new Image("medium.png");
         Image hardImage = new Image("hard.png");
@@ -1357,24 +1370,24 @@ public class ViewManager {
         Globals.GlobalImgView.setLayoutX(600);
         Globals.GlobalImgView.setLayoutY(250);
 
-        if (Globals.difficulty == 1){
+        if (Globals.difficulty == 1) {
 
             Globals.GlobalImgView.setImage(easyImage);
             Globals.GoldAmount = 1300;
         }
-        if(Globals.difficulty == 2){
+        if (Globals.difficulty == 2) {
 
             Globals.GlobalImgView.setImage(mediumImage);
             Globals.GoldAmount = 1000;
         }
-        if(Globals.difficulty == 3){
+        if (Globals.difficulty == 3) {
 
             Globals.GlobalImgView.setImage(hardImage);
             Globals.GoldAmount = 700;
         }
     }
 
-    private void CreateMainLabelText(){
+    private void CreateMainLabelText() {
         Label text = new Label("HEROES OF MIGHT");
         text.setLayoutX(350);
         text.setLayoutY(30);
@@ -1383,29 +1396,77 @@ public class ViewManager {
         mainPane.getChildren().add(text);
     }
 
-    /*
-    public Node getNodeByRowColumnIndex(int rowIndex, int columnIndex){
-        Node node = null;
-        ObservableList<Node> observableList = grid.getChildren();
-        for (Node nd : observableList){
-            System.out.println(nd.toString());
-            System.out.println(GridPane.getRowIndex(nd));
-            if (GridPane.getRowIndex(nd) == rowIndex && GridPane.getColumnIndex(nd) == columnIndex){
-                node = nd;
-                break;
+
+    public boolean getNodeByRowColumnIndex(int rowIndex, int columnIndex) {
+
+        ObservableList<Node> observableList = game.grid.getChildren();
+        for (Node nd : observableList) {
+
+            if (GridPane.getRowIndex(nd) == rowIndex && GridPane.getColumnIndex(nd) == columnIndex && GridPane.getRowIndex(nd) != null && GridPane.getColumnIndex(nd) != null) {
+                System.out.println(nd.toString());
+                return true;
+
             }
         }
-,
-        return node;
-    }
-     */
-
-    public void addPictureToCell(int col, int row, ImageView img){
-        grid.add(img, col, row);
+        return false;
     }
 
 
-   // public boolean IsCharacterOnCell(int col, int row){
+    public void addPictureToCell(int col, int row, ImageView img) {
+        game.grid.add(img, col, row);
+    }
 
-    //}
+
+    // public boolean IsCharacterOnCell(int col, int row){
+    public void addherotoherounits(Hero hero) {
+        if (Integer.parseInt(FoldmuvesAmount.getText()) > 0) {
+            if (Integer.parseInt(FoldmuvesAmount.getText()) > 0) {
+                foldmuves.unitamount = Integer.parseInt(FoldmuvesAmount.getText());
+                foldmuves.setDamage(foldmuves.getDamage() * foldmuves.unitamount);
+                foldmuves.setHealth(foldmuves.getHealth() * foldmuves.unitamount);
+                hero.getUnits().add(foldmuves);
+            }
+
+            if (Integer.parseInt(IjaszAmount.getText()) > 0) {
+
+                ijasz.unitamount = Integer.parseInt(IjaszAmount.getText());
+                ijasz.setDamage(ijasz.getDamage() * ijasz.unitamount);
+                ijasz.setHealth(ijasz.getHealth() * ijasz.unitamount);
+                hero.getUnits().add(ijasz);
+            }
+
+            if (Integer.parseInt(SarkanyAmount.getText()) > 0) {
+
+                griff.unitamount = Integer.parseInt(SarkanyAmount.getText());
+                griff.setDamage(griff.getDamage() * griff.unitamount);
+                griff.setHealth(griff.getHealth() * griff.unitamount);
+                hero.getUnits().add(griff);
+            }
+            if (Integer.parseInt(CicaAmount.getText()) > 0) {
+
+                cica.unitamount = Integer.parseInt(CicaAmount.getText());
+                cica.setDamage(cica.getDamage() * cica.unitamount);
+                cica.setHealth(cica.getHealth() * cica.unitamount);
+                hero.getUnits().add(cica);
+            }
+            if (Integer.parseInt(ArmnouredCicaAmount.getText()) > 0) {
+
+                panceloscica.unitamount = Integer.parseInt(ArmnouredCicaAmount.getText());
+                panceloscica.setDamage(panceloscica.getDamage() * panceloscica.unitamount);
+                panceloscica.setHealth(panceloscica.getHealth() * panceloscica.unitamount);
+                hero.getUnits().add(panceloscica);
+
+            }
+        }
+    }
+
+    public void IsPlayerReadyToStart() {
+        if (specButtons.size() == 0) {
+            game.StartGame();
+
+        }
+
+
+    }
 }
+
