@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import java.util.Random;
 
 public class PancelosCica extends Unit{
-    private final String name = "Cica";
+    public final String name = "Cica";
     private int Health;
     private int Damage;
     private int Speed;

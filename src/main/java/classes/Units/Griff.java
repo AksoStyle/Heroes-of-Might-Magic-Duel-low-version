@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import java.util.Random;
 
 public class Griff extends Unit{
-    private final String name = "Griff";
+    public final String name = "Griff";
     private int Health;
     private int Damage;
     private int Speed;

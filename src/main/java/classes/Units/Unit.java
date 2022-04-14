@@ -1,20 +1,26 @@
 package classes.Units;
 
+import javafx.scene.image.ImageView;
+
 public abstract class Unit {
+    public String name;
     private int Health;
     private int Damage;
     private int Speed;
     private int Initiation;
     private String Speciality;
+    private ImageView image;
     public int x_pos;
     public int y_pos;
 
-    public Unit(){
+    public Unit() {
         Health = 1;
         Damage = 1;
         Speed = 1;
         Initiation = 1;
         Speciality = "";
+        x_pos = 20;
+        y_pos = 20;
     }
     public Unit(int health, int damage, int speed, int initiation, String speciality) {
         Health = health;
@@ -22,6 +28,18 @@ public abstract class Unit {
         Speed = speed;
         Initiation = initiation;
         Speciality = speciality;
+    }
+
+    public ImageView getImage() {
+        return image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String setName(String name) {
+        return this.name = name;
     }
 
     public int getHealth() {

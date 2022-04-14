@@ -25,9 +25,8 @@ import javafx.stage.Stage;
 import main.kotprog.Globals;
 import model.HeroesOfMightButton;
 import model.SpecButton;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 public class ViewManager {
     private static final int HEIGHT = 800;
@@ -36,6 +35,7 @@ public class ViewManager {
     private final Scene mainScene;
     private final Stage mainStage;
     private GridPane grid;
+
 
     private int foldmuvesAmount = 0;
     private int ijaszAmount = 0;
@@ -96,7 +96,7 @@ public class ViewManager {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Enemy randomenemy = new Enemy(1,1,1,1,1,1);
+
                 Scene menu = Globals.primaryStage.getScene();
                 Pane root = new Pane();
                 HeroesOfMightButton exitButtonFromGame = new HeroesOfMightButton("EXIT");
@@ -122,9 +122,51 @@ public class ViewManager {
                 HeroesOfMightButton startGameButton = new HeroesOfMightButton("Start");
                 startGameButton.setLayoutX(1009);
                 startGameButton.setLayoutY(0);
+
+                startGameButton.setVisible(false);
+
                 startGameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+                        Enemy randomenemy = new Enemy(1,1,1,1,1,1,0,0,0,0,0);
+                        System.out.println(randomenemy);
+
+                        for (int i = 0; i < randomenemy.enemyUnits.size(); i++){
+                            Random rnd = new Random();
+                            randomenemy.enemyUnits.get(i).x_pos = rnd.nextInt(10, 11+1);
+                            randomenemy.enemyUnits.get(i).y_pos = rnd.nextInt(0, 10);
+                            grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
+                            System.out.println("Az ellenséges " + randomenemy.enemyUnits.get(i).getName() + ", Pozíciója: X: "+ randomenemy.enemyUnits.get(i).x_pos +", Y: "+ randomenemy.enemyUnits.get(i).y_pos);
+
+
+
+
+
+                            //if (!grid.getChildren().contains(randomenemy.enemyUnits.get(i).getImage())){
+                            //   grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
+                            //}
+
+                            /*
+                            if (grid.getChildren().contains(randomenemy.enemyUnits.get(i).getImage())){
+                                randomenemy.enemyUnits.get(i).x_pos = rnd.nextInt(10, 11+1);
+                                randomenemy.enemyUnits.get(i).y_pos = rnd.nextInt(0, 10);
+                                grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
+                                System.out.println("Az ellenséges " + randomenemy.enemyUnits.get(i).getName() + ", Pozíciója: X: "+ randomenemy.enemyUnits.get(i).x_pos +", Y: "+ randomenemy.enemyUnits.get(i).y_pos);
+                            }
+                            else{
+                                grid.add(randomenemy.enemyUnits.get(i).getImage(), randomenemy.enemyUnits.get(i).x_pos, randomenemy.enemyUnits.get(i).y_pos);
+                                System.out.println("Az ellenséges " + randomenemy.enemyUnits.get(i).getName() + ", Pozíciója: X: "+ randomenemy.enemyUnits.get(i).x_pos +", Y: "+ randomenemy.enemyUnits.get(i).y_pos);
+                            }
+
+                             */
+
+
+                        }
+
+
+                        //System.out.println(Arrays.toString(randomenemy.enemyUnits.toArray()));
+
+
                         Pane root = new Pane();
 
 
@@ -147,6 +189,7 @@ public class ViewManager {
 
                         // grid for the map
                         int rows = 10;
+
                         int columns = 12;
 
                         for(int i = 0; i < columns; i++) {
@@ -206,10 +249,29 @@ public class ViewManager {
                                             }
                                             int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
                                             int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            foldmuves.x_pos = tmpx;
+                                            foldmuves.y_pos = tmpy;
+                                            if (foldmuves.x_pos == ijasz.x_pos && foldmuves.y_pos == ijasz.y_pos){
+                                                return;
+                                            }
+                                            if (foldmuves.x_pos == griff.x_pos && foldmuves.y_pos == griff.y_pos){
+                                                return;
+                                            }
+                                            if (foldmuves.x_pos == cica.x_pos && foldmuves.y_pos == cica.y_pos){
+                                                return;
+                                            }
+                                            if (foldmuves.x_pos == panceloscica.x_pos && foldmuves.y_pos == panceloscica.y_pos){
+                                                 return;
+                                            }
+                                            if (tmpx < 2 ){
 
-                                            if (tmpx < 2){
-                                                addPictureToCell(tmpx, tmpy,  foldmuves.getImage());
-                                                System.out.println("Földműves elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                addPictureToCell(foldmuves.x_pos, foldmuves.y_pos,  foldmuves.getImage());
+
+                                                System.out.println("Földműves elhelyezve a " + foldmuves.x_pos + " : " + foldmuves.y_pos + " Koordinátára.");
+                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
+                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
+                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
+                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 fmb.setVisible(false);
                                                 grid.setOnMouseClicked(null);
                                             }
@@ -244,10 +306,29 @@ public class ViewManager {
                                             }
                                             int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
                                             int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            ijasz.x_pos = tmpx;
+                                            ijasz.y_pos = tmpy;
+                                            if (ijasz.x_pos == foldmuves.x_pos && ijasz.y_pos == foldmuves.y_pos){
+                                                return;
+                                            }
+                                            if (ijasz.x_pos == griff.x_pos && ijasz.y_pos == griff.y_pos){
+                                                return;
+                                            }
+                                            if (ijasz.x_pos == cica.x_pos && ijasz.y_pos == cica.y_pos){
+                                                return;
+                                            }
+                                            if (ijasz.x_pos == panceloscica.x_pos && ijasz.y_pos == panceloscica.y_pos){
+                                                return;
+                                            }
+                                            if (tmpx < 2 ){
 
-                                            if (tmpx < 2){
-                                                addPictureToCell(tmpx, tmpy,  ijasz.getImage());
-                                                System.out.println("Ijász elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                addPictureToCell(ijasz.x_pos, ijasz.y_pos,  ijasz.getImage());
+
+                                                System.out.println("Ijász elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára."); System.out.println("Földműves elhelyezve a " + foldmuves.x_pos + " : " + foldmuves.y_pos + " Koordinátára.");
+                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
+                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
+                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
+                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 ijb.setVisible(false);
                                                 grid.setOnMouseClicked(null);
                                             }
@@ -279,10 +360,29 @@ public class ViewManager {
                                             }
                                             int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
                                             int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            griff.x_pos = tmpx;
+                                            griff.y_pos = tmpy;
+                                            if (griff.x_pos == foldmuves.x_pos && griff.y_pos == foldmuves.y_pos){
+                                                return;
+                                            }
+                                            if (griff.x_pos == ijasz.x_pos && griff.y_pos == ijasz.y_pos){
+                                                return;
+                                            }
+                                            if (griff.x_pos == cica.x_pos && griff.y_pos == cica.y_pos){
+                                                return;
+                                            }
+                                            if (griff.x_pos == panceloscica.x_pos && griff.y_pos == panceloscica.y_pos){
+                                                return;
+                                            }
+                                            if (tmpx < 2 ){
 
-                                            if (tmpx < 2){
-                                                addPictureToCell(tmpx, tmpy,  griff.getImage());
+                                                addPictureToCell(griff.x_pos, griff.y_pos,  griff.getImage());
+
                                                 System.out.println("Griff elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
+                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
+                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
+                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 gb.setVisible(false);
                                                 grid.setOnMouseClicked(null);
                                             }
@@ -314,13 +414,29 @@ public class ViewManager {
                                             }
                                             int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
                                             int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            cica.x_pos = tmpx;
+                                            cica.y_pos = tmpy;
+                                            if (cica.x_pos == foldmuves.x_pos && cica.y_pos == foldmuves.y_pos){
+                                                return;
+                                            }
+                                            if (cica.x_pos == ijasz.x_pos && cica.y_pos == ijasz.y_pos){
+                                                return;
+                                            }
+                                            if (cica.x_pos == griff.x_pos && cica.y_pos == griff.y_pos){
+                                                return;
+                                            }
+                                            if (cica.x_pos == panceloscica.x_pos && cica.y_pos == panceloscica.y_pos){
+                                                return;
+                                            }
+                                            if (tmpx < 2 ){
 
-                                            if (tmpx < 2){
-                                                cica.x_pos = tmpx;
-                                                cica.y_pos = tmpy;
                                                 addPictureToCell(cica.x_pos, cica.y_pos,  cica.getImage());
 
                                                 System.out.println("Cica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
+                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
+                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
+                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
                                                 cb.setVisible(false);
                                                 grid.setOnMouseClicked(null);
                                             }
@@ -352,10 +468,28 @@ public class ViewManager {
                                             }
                                             int tmpy = (int)Math.floor((mouseEvent.getY()-125) / 55);
                                             int tmpx = (int)Math.floor(mouseEvent.getX() / 55);
+                                            panceloscica.x_pos = tmpx;
+                                            panceloscica.y_pos = tmpy;
+                                            if (panceloscica.x_pos == foldmuves.x_pos && panceloscica.y_pos == foldmuves.y_pos){
+                                                return;
+                                            }
+                                            if (panceloscica.x_pos == ijasz.x_pos && panceloscica.y_pos == ijasz.y_pos){
+                                                return;
+                                            }
+                                            if (panceloscica.x_pos == griff.x_pos && panceloscica.y_pos == griff.y_pos){
+                                                return;
+                                            }
+                                            if (panceloscica.x_pos == cica.x_pos && cica.y_pos == panceloscica.y_pos){
+                                                return;
+                                            }
+                                            if (tmpx < 2 ){
 
-                                            if (tmpx < 2){
-                                                addPictureToCell(tmpx, tmpy,  panceloscica.getImage());
+                                                addPictureToCell(panceloscica.x_pos, panceloscica.y_pos,  panceloscica.getImage());
                                                 System.out.println("PáncélosCica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
+                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
+                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
+                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
+                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
                                                 acb.setVisible(false);
                                                 grid.setOnMouseClicked(null);
                                             }
@@ -847,6 +981,9 @@ public class ViewManager {
                 FoldmuvesButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+
+                        startGameButton.setVisible(true);
+
                         if (Integer.parseInt(GoldAmount.getText()) < 2){
 
                         }
@@ -858,7 +995,7 @@ public class ViewManager {
                             int Foldmuvesvalue = Integer.parseInt(FoldmuvesAmount.getText());
                             FoldmuvesAmount.setText("" + (Foldmuvesvalue+1) + "");
                             foldmuvesAmount++;
-                            System.out.println(foldmuvesAmount);
+
                         }
                     }
                 });
@@ -873,6 +1010,8 @@ public class ViewManager {
                 IjaszButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+
+                        startGameButton.setVisible(true);
                         if (Integer.parseInt(GoldAmount.getText()) < 6){
 
                         }
@@ -884,7 +1023,7 @@ public class ViewManager {
                             int ijaszvalue = Integer.parseInt(IjaszAmount.getText());
                             IjaszAmount.setText("" + (ijaszvalue+1) + "");
                             ijaszAmount++;
-                            System.out.println(ijaszAmount);
+
                         }
                     }
                 });
@@ -900,6 +1039,8 @@ public class ViewManager {
                 SarkanyButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+
+                        startGameButton.setVisible(true);
                         if (Integer.parseInt(GoldAmount.getText()) < 15){
 
                         }
@@ -911,7 +1052,7 @@ public class ViewManager {
                             int Sarkanyvalue = Integer.parseInt(SarkanyAmount.getText());
                             SarkanyAmount.setText("" + (Sarkanyvalue+1) + "");
                             griffAmount++;
-                            System.out.println(griffAmount);
+
                         }
                     }
                 });
@@ -926,6 +1067,8 @@ public class ViewManager {
                 CicaButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+
+                        startGameButton.setVisible(true);
                         if (Integer.parseInt(GoldAmount.getText()) < 20){
 
                         }
@@ -937,7 +1080,7 @@ public class ViewManager {
                             int Cicavalue = Integer.parseInt(CicaAmount.getText());
                             CicaAmount.setText("" + (Cicavalue+1) + "");
                             cicaAmount++;
-                            System.out.println(cicaAmount);
+
                         }
                     }
                 });
@@ -952,6 +1095,8 @@ public class ViewManager {
                 ArmouredCatButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
+
+                        startGameButton.setVisible(true);
                         if (Integer.parseInt(GoldAmount.getText()) < 50){
 
                         }
@@ -963,7 +1108,7 @@ public class ViewManager {
                             int ArmouredCicavalue = Integer.parseInt(ArmnouredCicaAmount.getText());
                             ArmnouredCicaAmount.setText("" + (ArmouredCicavalue+1) + "");
                             armourdercicaamount++;
-                            System.out.println(armourdercicaamount);
+
                         }
                     }
                 });
@@ -1258,6 +1403,7 @@ public class ViewManager {
     public void addPictureToCell(int col, int row, ImageView img){
         grid.add(img, col, row);
     }
+
 
    // public boolean IsCharacterOnCell(int col, int row){
 

@@ -9,7 +9,7 @@ public class Globals {
     public static int difficulty = 1;
     public static ImageView GlobalImgView = new ImageView();
     public static int GoldAmount = 1300;
-    public static int GoldAmountofEnemy = 1000;
+
 
     public static int priceofTamadas = 5;
     public static int priceofVedekezes = 5;
@@ -25,15 +25,13 @@ public class Globals {
     public static int priceofMoralenemy = 5;
     public static int priceofSzerencseenemy = 5;
 
-    public static int RandomTraitetNovel(int price, int trait, int howmuch, int goldamount){
-        for (int i = 0; i < howmuch;i++){
-            trait++;
-            goldamount -= price;
-            price =  (int) (Math.ceil(price *0.1) + price);
-            System.out.println(price);
-        }
-        return price;
-    }
+    public static int priceoffoldmuvesenemy = 2;
+    public static int priceofijaszenemy = 6;
+    public static int priceofgriffenemy = 15;
+    public static int priceofcicaenemy = 20;
+    public static int priceofpanceloscicaenemy = 50;
+
+
 
 
 }

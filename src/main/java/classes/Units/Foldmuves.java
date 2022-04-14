@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Foldmuves extends Unit{
-    private final String name = "Földműves";
+    public final String name = "Földműves";
     private int Health;
     private int Damage;
     private int Speed;
