@@ -12,6 +12,12 @@ public class Hero {
     private int moral; //  az egységek kezdeményezését növeli, tulajdonságpontonként 1-gyel.
     private int szerencse; // az egységek kritikus támadásának esélyét növeli, tulajdonságpontonként 5%-kal.
     private int mana; // A hős manája, mellyel varázserőt tud használni
+
+    private int Villamcsapas;
+    private int Tuzlabda;
+    private int Feltamasztas;
+    private int bonus;
+    private int Doubleheal;
     private ArrayList<Unit> units; // a hős egységei
 
     public ArrayList<Unit> getUnits() {
@@ -34,6 +40,12 @@ public class Hero {
         this.moral = 1;
         this.szerencse = 1;
         this.mana = 10;
+        this.Villamcsapas = 0;
+        this.Tuzlabda = 0;
+        this.Feltamasztas = 0;
+        this.bonus = 0;
+        this.Doubleheal = 0;
+
         units = new ArrayList<>();
     }
 
@@ -132,16 +144,63 @@ public class Hero {
 
     public void setMana(int mana) {
         if(mana < 0){
-            this.mana = 1;
+            this.mana = 10;
         }
         else{
             this.mana = mana;
         }
     }
 
+    public int getVillamcsapas() {
+        return Villamcsapas;
+    }
+
+    public void setVillamcsapas(int villamcsapas) {
+        Villamcsapas = villamcsapas;
+    }
+
+    public int getTuzlabda() {
+        return Tuzlabda;
+    }
+
+    public void setTuzlabda(int tuzlabda) {
+        Tuzlabda = tuzlabda;
+    }
+
+    public int getFeltamasztas() {
+        return Feltamasztas;
+    }
+
+    public void setFeltamasztas(int feltamasztas) {
+        Feltamasztas = feltamasztas;
+    }
+
+    public int getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(int bonus) {
+        this.bonus = bonus;
+    }
+
+    public int getDoubleheal() {
+        return Doubleheal;
+    }
+
+    public void setDoubleheal(int doubleheal) {
+        Doubleheal = doubleheal;
+    }
+
     @Override
     public String toString() {
-        return "A Hős támadási pontja: " + tamadas + ", Védekezése: " + vedekezes + ", Varázsereje: " + varazsero + ", Tudása: " + tudas + ", Morálja: " + moral + ", Szerencséje: " + szerencse + ".";
+        return "A Hős támadási pontja: " + tamadas +
+                ", Védekezése: " + vedekezes +
+                ", Varázsereje: " + varazsero +
+                ", Tudása: " + tudas +
+                ", Morálja: " + moral +
+                ", Szerencséje: " + szerencse +
+                ", Manája: " + mana +
+                "";
     }
 
 

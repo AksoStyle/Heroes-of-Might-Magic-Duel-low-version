@@ -3,8 +3,8 @@ package view;
 import classes.Enemy;
 import classes.Hero;
 import classes.Units.*;
-import classes.magics.VillamCsapas;
-import javafx.beans.Observable;
+import classes.magics.*;
+import javafx.animation.PauseTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,11 +23,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import main.kotprog.Game;
 import main.kotprog.Globals;
 import model.HeroesOfMightButton;
 import model.SpecButton;
-
 import java.util.*;
 
 public class ViewManager {
@@ -58,8 +58,43 @@ public class ViewManager {
     private Label CicaAmount;
     private Label ArmnouredCicaAmount;
 
+
+    private Label TamadasLabelAMount;
+    private Label VedekezesLabelAmount;
+    private Label VarazseroLabelAmount;
+    private Label TudasLabelAmount;
+    private Label MoralLabelAmount;
+    private Label SzerencseLabelAmount;
+    private Label manapointsamount;
+    private Label MannaAmount;
+    private Label Magics;
+    private Label Units;
+
+    private Label YouWon;
+
+
+    private SpecButton VillamcsapasButton;
+    private SpecButton TuzlabdaButton;
+    private SpecButton FeltamasztasButton;
+    private SpecButton BonusButton;
+    private SpecButton DoubleHealButton;
+
+    private Label VillamcsapasAmount;
+    private Label TuzlabdaAmount;
+    private Label FeltamadasAmount;
+    private Label BonusAmount;
+    private Label DoubleHealAmount;
+
+
+
     private Enemy randomenemy;
+    private Hero hero;
     private Game game;
+    private VillamCsapas villamCsapas;
+    private Tuzlabda tuzlabda;
+    private Feltamasztas feltamasztas;
+    private Bonus bonus;
+    private DoubleHeal doubleHeal;
 
     private final static int MENU_BUTTONS_START_X = WIDTH / 6;
     private final static int MENU_BUTTONS_START_Y = 150;
@@ -82,16 +117,47 @@ public class ViewManager {
         CreateMainLabelText();
         mainPane.getChildren().add(Globals.GlobalImgView);
 
+        Units = new Label("Egységek kiválasztása:");
+        VillamcsapasButton = new SpecButton("V");
+        TuzlabdaButton = new SpecButton("T");
+        FeltamasztasButton = new SpecButton("F");
+        BonusButton = new SpecButton("B");
+        DoubleHealButton = new SpecButton("D");
+        Magics = new Label("Elérhető varázslatok");
+
+        VillamcsapasAmount = new Label("0");
+        TuzlabdaAmount = new Label("0");
+        FeltamadasAmount = new Label("0");
+         BonusAmount = new Label("0");
+        DoubleHealAmount = new Label("0");
+        manapointsamount = new Label("");
         specButtons = new ArrayList<>();
         root3 = new Pane();
-        Hero hero = new Hero();
-        randomenemy = new Enemy(1,1,1,1,1,1,0,0,0,0,0);
+        hero = new Hero();
+        randomenemy = new Enemy(1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0);
         game = new Game(hero, randomenemy, new GridPane());
         FoldmuvesAmount = new Label();
         IjaszAmount = new Label();
         SarkanyAmount = new Label();
         CicaAmount = new Label();
         ArmnouredCicaAmount = new Label();
+
+        TamadasLabelAMount = new Label();
+        VedekezesLabelAmount = new Label();
+        VarazseroLabelAmount = new Label();
+        TudasLabelAmount = new Label();
+        MoralLabelAmount = new Label();
+        SzerencseLabelAmount = new Label();
+
+        villamCsapas = new VillamCsapas();
+        tuzlabda = new Tuzlabda();
+        feltamasztas = new Feltamasztas();
+        bonus = new Bonus();
+        doubleHeal = new DoubleHeal();
+
+        YouWon = new Label("");
+
+        MannaAmount = new Label();
 
 
     }
@@ -154,6 +220,14 @@ public class ViewManager {
                         //Hero unitok megadása
 
                         addherotoherounits(game.getHos());
+                        hero.setTudas(Integer.parseInt(TudasLabelAmount.getText()));
+                        hero.setTamadas(Integer.parseInt(TamadasLabelAMount.getText()));
+                        hero.setVedekezes(Integer.parseInt(VedekezesLabelAmount.getText()));
+                        hero.setVarazsero(Integer.parseInt(VarazseroLabelAmount.getText()));
+                        hero.setMoral(Integer.parseInt(MoralLabelAmount.getText()));
+                        hero.setSzerencse(Integer.parseInt(SzerencseLabelAmount.getText()));
+                        hero.setMana(hero.getTudas() * 10);
+
 
                         //enemy unitok
 
@@ -240,7 +314,7 @@ public class ViewManager {
 
                         //Buttons-Labels -  HUD ---------------------------------------------->
                         //Units
-                        Label Units = new Label("Egységek kiválasztása:");
+
                         Units.setLayoutX(0);
                         Units.setLayoutY(0);
                         Units.setFont(new Font("Cardinal", 30));
@@ -532,48 +606,307 @@ public class ViewManager {
                         manapoints.setLayoutX(0);
                         manapoints.setLayoutY(750);
                         manapoints.setFont(new Font("Cardinal", 30));
-                        Label manapointsamount = new Label("0");
+                        manapointsamount = new Label("" + hero.getMana() + "");
                         manapointsamount.setLayoutX(85);
                         manapointsamount.setLayoutY(750);
                         manapointsamount.setFont(new Font("Cardinal", 30));
 
                         root3.getChildren().addAll(manapoints, manapointsamount);
-                        //Magics
-                        Label Magics = new Label("Varázslatok kiválasztása:");
+
+
+                        //Magics ----------------------------------------------------->
+                        Magics.setVisible(false);
                         Magics.setLayoutX(0);
                         Magics.setLayoutY(300);
                         Magics.setFont(new Font("Cardinal", 30));
                         root3.getChildren().add(Magics);
                         int MagLayy = 400;
                         if (villamcsapasamount != 0) {
-                            SpecButton VillamcsapasButton = new SpecButton("V");
+                            VillamcsapasButton.setVisible(false);
+                            VillamcsapasAmount.setVisible(false);
+                            VillamcsapasAmount.setLayoutX(20);
+                            VillamcsapasAmount.setLayoutY(MagLayy+40);
                             VillamcsapasButton.setLayoutX(0);
                             VillamcsapasButton.setLayoutY(MagLayy);
-                            root3.getChildren().add(VillamcsapasButton);
+                            VillamcsapasButton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent event) {
+                                            if (Integer.parseInt(manapointsamount.getText()) < 5) {
+                                                System.out.println("Nincs elég mana!");
+                                                game.grid.setOnMouseClicked(null);
+                                                VillamcsapasButton.setOnAction(null);
+                                            }
+                                            if (event.getY() > 675 || event.getY() < 125) {
+                                                return;
+                                            }
+                                            int tmpy = (int) Math.floor((event.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(event.getX() / 55);
+                                            for(Unit hero : game.getHos().getUnits()) {
+                                                if (hero.x_pos == tmpx && hero.y_pos == tmpy) {
+                                                    System.out.println("Nem tudsz villámcsapást küldeni saját egységre!");
+                                                    game.grid.setOnMouseClicked(null);
+                                                }
+                                            }
+
+                                            for (Unit en : randomenemy.enemyUnits){
+                                                        if (en.x_pos== tmpx && en.y_pos== tmpy){
+                                                            VillamcsapasAmount.setText("" + (Integer.parseInt(VillamcsapasAmount.getText()) - 1));
+                                                            manapointsamount.setText("" + (Integer.parseInt(manapointsamount.getText()) - villamCsapas.getMannakoltseg()));
+                                                            System.out.println("Enemy unit found");
+                                                            en.setHealth(en.getHealth()-hero.getVarazsero() * villamCsapas.Sebzes);
+                                                            System.out.println("Enemy" + en.getName() +  " health: " + en.getHealth() );
+                                                            if (en.getHealth()<=0){
+                                                                System.out.println("Enemy unit killed");
+                                                                game.grid.getChildren().remove(en.getImage());
+
+                                                                randomenemy.enemyUnits.remove(en);
+                                                                DoesHeroWin();
+                                                                break;
+                                                            }
+                                                        }
+                                            }
+
+                                            if (VillamcsapasAmount.getText().equals("0")){
+                                                VillamcsapasAmount.setVisible(false);
+                                                VillamcsapasButton.setVisible(false);
+                                            }
+
+                                        }
+                                    });
+                                }
+                            });
+
+                            root3.getChildren().addAll(VillamcsapasButton, VillamcsapasAmount);
                         }
                         if (tuzlabdaamount != 0) {
-                            SpecButton TuzlabdaButton = new SpecButton("T");
+                            TuzlabdaButton.setVisible(false);
+                            TuzlabdaAmount.setVisible(false);
+                            TuzlabdaAmount.setLayoutX(80);
+                            TuzlabdaAmount.setLayoutY(MagLayy+40);
                             TuzlabdaButton.setLayoutX(60);
                             TuzlabdaButton.setLayoutY(MagLayy);
-                            root3.getChildren().add(TuzlabdaButton);
+                            TuzlabdaButton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent event) {
+                                            if (Integer.parseInt(manapointsamount.getText()) < 9) {
+                                                System.out.println("Nincs elég mana!");
+                                                game.grid.setOnMouseClicked(null);
+                                                TuzlabdaButton.setOnAction(null);
+                                            }
+                                            TuzlabdaAmount.setText(Integer.parseInt("" + TuzlabdaAmount.getText()) - 1 + "");
+                                            if (event.getY() > 675 || event.getY() < 125) {
+                                                return;
+                                            }
+                                            int tmpy = (int) Math.floor((event.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(event.getX() / 55);
+                                            int balatlo_x = tmpx - 1;
+                                            int balatlo_y = tmpy - 1;
+                                            int high_x = tmpx ;
+                                            int high_y = tmpy-1 ;
+                                            int jobbatlo_x = tmpx + 1;
+                                            int jobbatlo_y = tmpy - 1;
+                                            int right_x = tmpx + 1;
+                                            int right_y = tmpy;
+                                            int jobbalsoatlo_x = tmpx + 1;
+                                            int jobbalsoatlo_y = tmpy + 1;
+                                            int bottom_x = tmpx;
+                                            int bottom_y = tmpy + 1;
+                                            int balalsoatlo_x = tmpx - 1;
+                                            int balalsoatlo_y = tmpy + 1;
+                                            int left_x = tmpx - 1;
+                                            int left_y = tmpy;
+
+                                            System.out.println("Kiválasztott cella: " + tmpx + " : " + tmpy);
+                                            System.out.println("Balátló " + balatlo_x + " : " + balatlo_y);
+                                            System.out.println("Felső " + high_x + " : " + high_y);
+                                            System.out.println("Jobbátló " + jobbatlo_x + " : " + jobbatlo_y);
+                                            System.out.println("Jobb " + right_x + " : " + right_y);
+                                            System.out.println("Jobbalsó " + jobbalsoatlo_x + " : " + jobbalsoatlo_y);
+                                            System.out.println("Alsó " + bottom_x + " : " + bottom_y);
+                                            System.out.println("Balalsó " + balalsoatlo_x + " : " + balalsoatlo_y);
+                                            System.out.println("Bal " + left_x + " : " + left_y);
+
+                                            for (Unit en : randomenemy.enemyUnits) {
+                                                if (
+                                                        (en.x_pos == tmpx && en.y_pos == tmpy)
+                                                                ||
+                                                                (en.x_pos == balatlo_x && en.y_pos == balatlo_y)
+                                                                ||
+                                                                (en.x_pos == high_x && en.y_pos == high_y)
+                                                                ||
+                                                                (en.x_pos == jobbatlo_x && en.y_pos == jobbatlo_y)
+                                                                ||
+                                                                (en.x_pos == right_x && en.y_pos == right_y)
+                                                                ||
+                                                                (en.x_pos == jobbalsoatlo_x && en.y_pos == jobbalsoatlo_y)
+                                                                ||
+                                                                (en.x_pos == bottom_x && en.y_pos == bottom_y)
+                                                                ||
+                                                                (en.x_pos == balalsoatlo_x && en.y_pos == balalsoatlo_y)
+                                                                ||
+                                                                (en.x_pos == left_x && en.y_pos == left_y)) {
+                                                    en.setHealth(en.getHealth()- (hero.getVarazsero() * tuzlabda.Sebzes));
+                                                    if (en.getHealth() <= 0) {
+                                                        game.grid.getChildren().remove(en.getImage());
+                                                    }
+                                                }
+                                            }
+                                            hero.setMana(hero.getMana() - 6);
+                                            manapointsamount.setText("" + hero.getMana() + "");
+                                            if (TuzlabdaAmount.getText().equals("0")){
+                                                TuzlabdaAmount.setVisible(false);
+                                                TuzlabdaButton.setVisible(false);
+                                            }
+                                            CheckenemyUnits();
+                                            DoesHeroWin();
+                                        }
+                                    });
+                                }
+                            });
+
+
+                            root3.getChildren().addAll(TuzlabdaButton, TuzlabdaAmount);
                         }
                         if (feltamasztasamount != 0) {
-                            SpecButton FeltamasztasButton = new SpecButton("+");
+                            FeltamasztasButton.setVisible(false);
+                            FeltamadasAmount.setVisible(false);
+                            FeltamadasAmount.setLayoutX(140);
+                            FeltamadasAmount.setLayoutY(MagLayy+40);
                             FeltamasztasButton.setLayoutX(120);
                             FeltamasztasButton.setLayoutY(MagLayy);
-                            root3.getChildren().add(FeltamasztasButton);
+                            FeltamasztasButton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    game.grid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent event) {
+                                            if (Integer.parseInt(manapointsamount.getText()) < 6) {
+                                                System.out.println("Nincs elég mana!");
+                                                game.grid.setOnMouseClicked(null);
+                                                FeltamasztasButton.setOnAction(null);
+                                            }
+                                            FeltamadasAmount.setText(Integer.parseInt("" + FeltamadasAmount.getText()) - 1 + "");
+                                            if (event.getY() > 675 || event.getY() < 125) {
+                                                return;
+                                            }
+                                            int tmpy = (int) Math.floor((event.getY() - 125) / 55);
+                                            int tmpx = (int) Math.floor(event.getX() / 55);
+
+                                            for(Unit un : hero.getUnits()){
+                                                if (un.x_pos == tmpx && un.y_pos == tmpy) {
+                                                    un.setHealth(un.getHealth() + (hero.getVarazsero() * 50));
+                                                    System.out.println("A " + un.getName() + " egység életereje: " + un.getHealth());
+                                                    System.out.println(un.getMaxHealth());
+                                                    if (un.getHealth() > un.getMaxHealth()) {
+                                                        un.setHealth(un.getMaxHealth());
+                                                        System.out.println("Maximum életerő!");
+                                                        System.out.println("A " + un.getName() + " egység életereje: " + un.getHealth());
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            // mana levonása
+                                            hero.setMana(hero.getMana() - 6);
+                                            manapointsamount.setText("" + hero.getMana() + "");
+                                            if (FeltamadasAmount.getText().equals("0")){
+                                                FeltamadasAmount.setVisible(false);
+                                                FeltamasztasButton.setVisible(false);
+                                            }
+
+                                        }
+                                    });
+                                }
+                            });
+                            root3.getChildren().addAll(FeltamasztasButton, FeltamadasAmount);
                         }
                         if (bonusamount != 0) {
-                            SpecButton BonusButton = new SpecButton("B");
+                            BonusButton.setVisible(false);
+                            BonusAmount.setVisible(false);
+                            BonusAmount.setLayoutX(200);
+                            BonusAmount.setLayoutY(MagLayy+40);
                             BonusButton.setLayoutX(180);
                             BonusButton.setLayoutY(MagLayy);
-                            root3.getChildren().add(BonusButton);
+
+                            BonusButton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    if ( hero.getTamadas() < 9  &&
+                                         hero.getVedekezes() < 9 &&
+                                         hero.getVarazsero() < 9 &&
+                                         hero.getTudas() < 9 &&
+                                         hero.getMoral() < 9 &&
+                                         hero.getSzerencse() < 9 &&
+                                         hero.getMana() >= 10 ){
+                                         bonusamount--;
+                                         BonusAmount.setText(Integer.parseInt("" + BonusAmount.getText()) - 1 + "");
+                                            hero.setMana(hero.getMana() - 10);
+                                            manapointsamount.setText("" + hero.getMana() + "");
+                                            if (hero.getTamadas() <= 8) {
+                                                hero.setTamadas(hero.getTamadas() + 2);
+                                            }
+                                            if (hero.getVedekezes() <= 8) {
+                                                hero.setVedekezes(hero.getVedekezes() + 2);
+                                            }
+                                            if (hero.getVarazsero() <= 8) {
+                                                hero.setVarazsero(hero.getVarazsero() + 2);
+                                            }
+                                            if (hero.getTudas() <= 8) {
+                                                hero.setTudas(hero.getTudas() + 2);
+                                            }
+                                            if(hero.getMoral()<=8){
+                                                hero.setMoral(hero.getMoral()+2);
+                                            }
+                                            if(hero.getSzerencse()<=8){
+                                                hero.setSzerencse(hero.getSzerencse()+2);
+                                            }
+                                        if (BonusAmount.getText().equals("0")){
+                                            BonusAmount.setVisible(false);
+                                            BonusButton.setVisible(false);
+                                        }
+                                            System.out.println(hero);
+                                        }
+                                    else{
+                                        System.out.println("Nincs elég manád, vagy már van traited maximum értéken!");
+                                    }
+
+                                }
+
+
+                            });
+                            root3.getChildren().addAll(BonusButton, BonusAmount);
                         }
                         if (doublehealamount != 0) {
-                            SpecButton DoubleHealButton = new SpecButton("H");
+                            DoubleHealButton.setVisible(false);
+                            DoubleHealAmount.setVisible(false);
+                            DoubleHealAmount.setLayoutX(260);
+                            DoubleHealAmount.setLayoutY(MagLayy+40);
                             DoubleHealButton.setLayoutX(240);
                             DoubleHealButton.setLayoutY(MagLayy);
-                            root3.getChildren().add(DoubleHealButton);
+                            DoubleHealButton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    if (hero.getMana() >= 10) {
+                                        DoubleHealAmount.setText(Integer.parseInt("" + DoubleHealAmount.getText()) - 1 + "");
+                                        hero.setMana(hero.getMana() - 10);
+                                        manapointsamount.setText(""+hero.getMana());
+                                        for (Unit un : hero.getUnits()){
+                                            un.setHealth(un.getHealth()*2);
+                                            System.out.println("A " + un.getName()+" egységnek "+un.getHealth() + "-re nőtt az életereje!");
+                                        }
+                                    }
+                                    if (DoubleHealAmount.getText().equals("0")){
+                                        DoubleHealAmount.setVisible(false);
+                                        DoubleHealButton.setVisible(false);
+                                    }
+                                }
+                            });
+                            root3.getChildren().addAll(DoubleHealButton, DoubleHealAmount);
                         }
 
                         //magics end
@@ -604,7 +937,7 @@ public class ViewManager {
                 TamadasLabel.setLayoutX(300);
                 TamadasLabel.setLayoutY(Labely);
                 TamadasLabel.setFont(new Font("Cardinal", 20));
-                Label TamadasLabelAMount = new Label("1");
+                TamadasLabelAMount = new Label("1");
                 TamadasLabelAMount.setLayoutX(390);
                 TamadasLabelAMount.setLayoutY(Labely);
                 TamadasLabelAMount.setFont(new Font("Cardinal", 20));
@@ -623,7 +956,7 @@ public class ViewManager {
                             int TamadasValue = Integer.parseInt(TamadasLabelAMount.getText());
                             TamadasLabelAMount.setText("" + (TamadasValue + 1) + "");
                             Globals.priceofTamadas = (int) (Math.ceil(Globals.priceofTamadas * 0.1) + Globals.priceofTamadas);
-                            System.out.println("Támadás ára:" + Globals.priceofTamadas);
+
 
                         }
                     }
@@ -634,7 +967,7 @@ public class ViewManager {
                 VedekezesLabel.setLayoutX(450);
                 VedekezesLabel.setLayoutY(Labely);
                 VedekezesLabel.setFont(new Font("Cardinal", 20));
-                Label VedekezesLabelAmount = new Label("1");
+                VedekezesLabelAmount = new Label("1");
                 VedekezesLabelAmount.setLayoutX(560);
                 VedekezesLabelAmount.setLayoutY(Labely);
                 VedekezesLabelAmount.setFont(new Font("Cardinal", 20));
@@ -651,7 +984,7 @@ public class ViewManager {
                             int VedekezesValue = Integer.parseInt(VedekezesLabelAmount.getText());
                             VedekezesLabelAmount.setText("" + (VedekezesValue + 1) + "");
                             Globals.priceofVedekezes = (int) (Math.ceil(Globals.priceofVedekezes * 0.1) + Globals.priceofVedekezes);
-                            System.out.println("Védekezés ára:" + Globals.priceofVedekezes);
+
                         }
                     }
                 });
@@ -661,7 +994,7 @@ public class ViewManager {
                 VarazseroLabel.setLayoutX(600);
                 VarazseroLabel.setLayoutY(Labely);
                 VarazseroLabel.setFont(new Font("Cardinal", 20));
-                Label VarazseroLabelAmount = new Label("1");
+                VarazseroLabelAmount = new Label("1");
                 VarazseroLabelAmount.setLayoutX(700);
                 VarazseroLabelAmount.setLayoutY(Labely);
                 VarazseroLabelAmount.setFont(new Font("Cardinal", 20));
@@ -678,7 +1011,7 @@ public class ViewManager {
                             int VarazseroValue = Integer.parseInt(VarazseroLabelAmount.getText());
                             VarazseroLabelAmount.setText("" + (VarazseroValue + 1) + "");
                             Globals.priceofVarazsero = (int) (Math.ceil(Globals.priceofVarazsero * 0.1) + Globals.priceofVarazsero);
-                            System.out.println("Varázserő ára:" + Globals.priceofVarazsero);
+
                         }
                     }
                 });
@@ -688,7 +1021,7 @@ public class ViewManager {
                 TudasLabel.setLayoutX(750);
                 TudasLabel.setLayoutY(Labely);
                 TudasLabel.setFont(new Font("Cardinal", 20));
-                Label TudasLabelAmount = new Label("1");
+                TudasLabelAmount = new Label("1");
                 TudasLabelAmount.setLayoutX(830);
                 TudasLabelAmount.setLayoutY(Labely);
                 TudasLabelAmount.setFont(new Font("Cardinal", 20));
@@ -707,7 +1040,7 @@ public class ViewManager {
                             int TudasValue = Integer.parseInt(TudasLabelAmount.getText());
                             TudasLabelAmount.setText("" + (TudasValue + 1) + "");
                             Globals.priceofTudas = (int) (Math.ceil(Globals.priceofTudas * 0.1) + Globals.priceofTudas);
-                            System.out.println("Varázserő ára:" + Globals.priceofTudas);
+
                         }
                     }
                 });
@@ -717,7 +1050,7 @@ public class ViewManager {
                 MoralLabel.setLayoutX(900);
                 MoralLabel.setLayoutY(Labely);
                 MoralLabel.setFont(new Font("Cardinal", 20));
-                Label MoralLabelAmount = new Label("1");
+                MoralLabelAmount = new Label("1");
                 MoralLabelAmount.setLayoutX(970);
                 MoralLabelAmount.setLayoutY(Labely);
                 MoralLabelAmount.setFont(new Font("Cardinal", 20));
@@ -736,7 +1069,7 @@ public class ViewManager {
                             int MoralValue = Integer.parseInt(MoralLabelAmount.getText());
                             MoralLabelAmount.setText("" + (MoralValue + 1) + "");
                             Globals.priceofMoral = (int) (Math.ceil(Globals.priceofMoral * 0.1) + Globals.priceofMoral);
-                            System.out.println("Morál ára:" + Globals.priceofMoral);
+
                         }
                     }
                 });
@@ -747,7 +1080,7 @@ public class ViewManager {
                 SzerencseLabel.setLayoutX(1050);
                 SzerencseLabel.setLayoutY(Labely);
                 SzerencseLabel.setFont(new Font("Cardinal", 20));
-                Label SzerencseLabelAmount = new Label("1");
+                SzerencseLabelAmount = new Label("1");
                 SzerencseLabelAmount.setLayoutX(1150);
                 SzerencseLabelAmount.setLayoutY(Labely);
                 SzerencseLabelAmount.setFont(new Font("Cardinal", 20));
@@ -767,7 +1100,7 @@ public class ViewManager {
                             SzerencseLabelAmount.setText("" + (SzerencseValue + 1) + "");
 
                             Globals.priceofSzerencse = (int) (Math.ceil(Globals.priceofSzerencse * 0.1) + Globals.priceofSzerencse);
-                            System.out.println("Szerencse ára:" + Globals.priceofSzerencse);
+
                         }
                     }
                 });
@@ -806,7 +1139,6 @@ public class ViewManager {
                 Tuzlabdalabel.setLayoutX(50);
                 Tuzlabdalabel.setLayoutY(500);
                 Tuzlabdalabel.setFont(new Font("Cardinal", 25));
-                Label TuzlabdaAmount = new Label("0");
                 TuzlabdaAmount.setLayoutX(230);
                 TuzlabdaAmount.setLayoutY(500);
                 TuzlabdaAmount.setFont(new Font("Cardinal", 25));
@@ -816,7 +1148,6 @@ public class ViewManager {
                 VillamcsapasLabel.setLayoutX(50);
                 VillamcsapasLabel.setLayoutY(550);
                 VillamcsapasLabel.setFont(new Font("Cardinal", 25));
-                Label VillamcsapasAmount = new Label("0");
                 VillamcsapasAmount.setLayoutX(230);
                 VillamcsapasAmount.setLayoutY(550);
                 VillamcsapasAmount.setFont(new Font("Cardinal", 25));
@@ -826,7 +1157,6 @@ public class ViewManager {
                 FeltamadasLabel.setLayoutX(50);
                 FeltamadasLabel.setLayoutY(600);
                 FeltamadasLabel.setFont(new Font("Cardinal", 25));
-                Label FeltamadasAmount = new Label("0");
                 FeltamadasAmount.setLayoutX(230);
                 FeltamadasAmount.setLayoutY(600);
                 FeltamadasAmount.setFont(new Font("Cardinal", 25));
@@ -836,7 +1166,7 @@ public class ViewManager {
                 BonusLabel.setLayoutX(50);
                 BonusLabel.setLayoutY(650);
                 BonusLabel.setFont(new Font("Cardinal", 25));
-                Label BonusAmount = new Label("0");
+
                 BonusAmount.setLayoutX(230);
                 BonusAmount.setLayoutY(650);
                 BonusAmount.setFont(new Font("Cardinal", 25));
@@ -846,7 +1176,6 @@ public class ViewManager {
                 DoubleHealLabel.setLayoutX(50);
                 DoubleHealLabel.setLayoutY(700);
                 DoubleHealLabel.setFont(new Font("Cardinal", 25));
-                Label DoubleHealAmount = new Label("0");
                 DoubleHealAmount.setLayoutX(230);
                 DoubleHealAmount.setLayoutY(700);
                 DoubleHealAmount.setFont(new Font("Cardinal", 25));
@@ -1352,13 +1681,10 @@ public class ViewManager {
         addMenuButton(ExitButton);
     }
 
-
     private void createBackground() {
         Image backgroundImage = new Image("grass.png", true);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         mainPane.setBackground(new Background(background));
-
-
     }
 
     private void setDifficultyBackground() {
@@ -1371,17 +1697,14 @@ public class ViewManager {
         Globals.GlobalImgView.setLayoutY(250);
 
         if (Globals.difficulty == 1) {
-
             Globals.GlobalImgView.setImage(easyImage);
             Globals.GoldAmount = 1300;
         }
         if (Globals.difficulty == 2) {
-
             Globals.GlobalImgView.setImage(mediumImage);
             Globals.GoldAmount = 1000;
         }
         if (Globals.difficulty == 3) {
-
             Globals.GlobalImgView.setImage(hardImage);
             Globals.GoldAmount = 700;
         }
@@ -1391,8 +1714,8 @@ public class ViewManager {
         Label text = new Label("HEROES OF MIGHT");
         text.setLayoutX(350);
         text.setLayoutY(30);
-        text.setFont(new Font("Beau Rivage", 70));
-        text.setTextFill(Color.web("#7AFF33", 0.8));
+        text.setFont(new Font("Beau Rivage", 50));
+        text.setTextFill(Color.web("#000000", 0.8));
         mainPane.getChildren().add(text);
     }
 
@@ -1409,6 +1732,20 @@ public class ViewManager {
             }
         }
         return false;
+    }
+
+
+    public ImageView getNodeByRowColumnIndex2(int rowIndex, int columnIndex) {
+
+        ObservableList<Node> observableList = game.grid.getChildren();
+        for (Node nd : observableList){
+
+            if (GridPane.getRowIndex(nd) != null && GridPane.getColumnIndex(nd) != null && GridPane.getRowIndex(nd) == rowIndex && GridPane.getColumnIndex(nd) == columnIndex ){
+                //System.out.println(nd.toString());
+                return (ImageView) nd;
+            }
+        }
+        return null;
     }
 
 
@@ -1462,11 +1799,58 @@ public class ViewManager {
 
     public void IsPlayerReadyToStart() {
         if (specButtons.size() == 0) {
+            Units.setVisible(false);
+            Magics.setVisible(true);
+            VillamcsapasAmount.setVisible(true);
+            VillamcsapasButton.setVisible(true);
+
+
+            TuzlabdaAmount.setVisible(true);
+            TuzlabdaButton.setVisible(true);
+
+            FeltamadasAmount.setVisible(true);
+            FeltamasztasButton.setVisible(true);
+
+            BonusButton.setVisible(true);
+            BonusAmount.setVisible(true);
+
+            DoubleHealButton.setVisible(true);
+            DoubleHealAmount.setVisible(true);
+
             game.StartGame();
 
+
+
+
         }
-
-
     }
+
+    public void DoesHeroWin(){
+        if(randomenemy.enemyUnits.size() == 0){
+            YouWon.setText("YOU WON!");
+            YouWon.setVisible(true);
+            YouWon.setFont(new Font("Arial", 100));
+            YouWon.setLayoutX(500);
+            YouWon.setLayoutY(300);
+            root3.getChildren().add(YouWon);
+            PauseTransition delay = new PauseTransition(Duration.seconds(5));
+            delay.setOnFinished(event ->  mainStage.close() );
+            delay.play();
+        }
+    }
+
+    public void CheckenemyUnits(){
+        for(Unit un : randomenemy.enemyUnits){
+            if(un.getHealth() <= 0){
+                System.out.println(un.getName() + " Elhalálozott!");
+                randomenemy.enemyUnits.remove(un);
+                game.grid.getChildren().remove(un.getImage());
+                break;
+            }
+        }
+    }
+
+
+
 }
 

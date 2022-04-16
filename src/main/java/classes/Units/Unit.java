@@ -12,6 +12,7 @@ public abstract class Unit {
     private ImageView image;
     public int x_pos;
     public int y_pos;
+    private int maxHealth;
     public int unitamount;
 
     public Unit() {
@@ -22,6 +23,7 @@ public abstract class Unit {
         Speciality = "";
         x_pos = 20;
         y_pos = 20;
+
         unitamount = 0;
     }
 
@@ -31,6 +33,11 @@ public abstract class Unit {
         Speed = speed;
         Initiation = initiation;
         Speciality = speciality;
+
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public ImageView getImage() {

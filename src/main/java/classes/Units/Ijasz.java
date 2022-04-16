@@ -15,6 +15,7 @@ public class Ijasz extends Unit{
     private final String FILE_PATH  = "Unit_Archer.png";
     private Image img = new Image(FILE_PATH);
     private final ImageView image = new ImageView(img);
+    private int maxHealth;
     Random r = new Random();
 
     public Ijasz(){
@@ -23,8 +24,13 @@ public class Ijasz extends Unit{
         Speed = 4;
         Initiation = 9;
         Speciality = "Shoot";
+        maxHealth = 7;
         image.setFitWidth(55);
         image.setFitHeight(55);
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public ImageView getImage() {

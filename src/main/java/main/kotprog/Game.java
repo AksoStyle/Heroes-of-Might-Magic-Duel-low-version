@@ -3,6 +3,7 @@ package main.kotprog;
 import classes.Enemy;
 import classes.Hero;
 import classes.Units.Unit;
+import classes.magics.Magic;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -11,11 +12,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
+
 public class Game {
 private Hero hos;
 private Enemy enemy;
 public GridPane grid;
 private Unit selectedunit;
+
+
 
 private boolean flagForSelectUnit = true;
 public boolean isWin = false;
@@ -24,9 +29,12 @@ public boolean isWin = false;
         this.hos = hos;
         this.enemy = enemy;
         this.grid = grid;
+
         selectedunit = null;
 
     }
+
+
 
     /*
     public void KaraktertMozgat(int x_from, int y_from, int x_to, int y_to ) {
@@ -52,14 +60,6 @@ public boolean isWin = false;
     public void StartGame() {
         System.out.println("StartGame");
 
-            if (hos.getUnits().size() == 0){
-                System.out.println("Vége a játéknak, az ellenfél győzött");
-                isWin = true;
-            }
-            if (enemy.enemyUnits.size() == 0){
-                System.out.println("Vége a játéknak, Győztél!");
-                isWin = true;
-            }
             //SelectUnit();
                 grid.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
@@ -104,6 +104,11 @@ public boolean isWin = false;
                         int tmpy = (int) Math.floor((mouseEvent.getY() - 125) / 55);
                         int tmpx = (int) Math.floor(mouseEvent.getX() / 55);
                         System.out.println(tmpx + " : " + tmpy);
+                        //if (getNodeByRowColumnIndex(tmpy, tmpx) != null) {
+
+                        //}
+
+
                         if (getNodeByRowColumnIndex(tmpy, tmpx) == null) {
                             int maxmozgas = selectedunit.getSpeed();
                             int selectedunit_x = selectedunit.x_pos;

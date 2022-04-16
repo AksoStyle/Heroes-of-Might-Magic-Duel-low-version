@@ -15,6 +15,7 @@ public class Griff extends Unit{
     private final String FILE_PATH  = "Unit_Griff.png";
     private Image img = new Image(FILE_PATH);
     private final ImageView image = new ImageView(img);
+    private int maxHealth;
     Random r = new Random();
 
     public Griff(){
@@ -23,10 +24,14 @@ public class Griff extends Unit{
         Speed = 7;
         Initiation = 15;
         Speciality = "Infinity Counter";
+        maxHealth = 30;
         image.setFitWidth(55);
         image.setFitHeight(55);
     }
 
+    public int getMaxHealth() {
+        return maxHealth;
+    }
     public ImageView getImage() {
         return image;
     }

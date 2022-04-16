@@ -16,6 +16,7 @@ public class Cica extends Unit{
     private final String FILE_PATH = "Unit_Cica.png";
     private Image img = new Image(FILE_PATH);
     private final ImageView image = new ImageView(img);
+    private int maxHealth;
     Random r = new Random();
 
     public Cica(){
@@ -24,8 +25,13 @@ public class Cica extends Unit{
         Speed = 10;
         Initiation = 20;
         Speciality = "Meowing";
+        maxHealth = 50;
         image.setFitWidth(55);
         image.setFitHeight(55);
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public ImageView getImage() {

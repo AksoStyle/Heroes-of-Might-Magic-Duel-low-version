@@ -15,6 +15,7 @@ public class Foldmuves extends Unit{
     private int Damage;
     private int Speed;
     private int Initiation;
+    private int maxHealth;
     private final String Speciality;
 
     private final String FILE_PATH  = "Unit_Foldmuves.png";
@@ -28,8 +29,13 @@ public class Foldmuves extends Unit{
         Speed = 4;
         Initiation = 8;
         Speciality = "None";
+        maxHealth = 3;
         image.setFitWidth(55);
         image.setFitHeight(55);
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public ImageView getImage() {
