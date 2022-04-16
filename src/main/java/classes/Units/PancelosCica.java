@@ -1,8 +1,12 @@
 package classes.Units;
 
+/**
+ * Ez az osztály a PáncélosCica osztályt reprezentálja, A unit osztályból örököl.
+ * Az osztálynak van: életereje, sebzése, sebessége, kezdeményezése, specialitása, maximum élete illetve egy képe, mely
+ * reprezentálja a unitet.
+ */
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import java.util.Random;
 
 public class PancelosCica extends Unit{

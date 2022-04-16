@@ -1,5 +1,7 @@
 package classes.magics;
-
+/**
+ * Ebből az osztályból örököl az összes varázslat.
+ */
 public class Magic {
     public int ar;
     public int mannakoltseg;

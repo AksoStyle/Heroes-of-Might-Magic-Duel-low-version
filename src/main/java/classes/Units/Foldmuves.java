@@ -1,12 +1,12 @@
 package classes.Units;
 
+/**
+ * Ez az osztály a Földműves osztályt reprezentálja, A unit osztályból örököl.
+ * Az osztálynak van: életereje, sebzése, sebessége, kezdeményezése, specialitása, maximum élete illetve egy képe, mely
+ * reprezentálja a unitet.
+ */
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 public class Foldmuves extends Unit{

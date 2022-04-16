@@ -1,4 +1,8 @@
 package model;
+/**
+ * A HerroesofMightButton osztály egy gomb elkészítéséért felelős osztály.
+ * Ezt az osztály példányosítva könnyebben lehet létrehozni ilyen típusú gombot.
+ */
 
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
@@ -21,6 +25,9 @@ public class HeroesOfMightButton extends Button{
         initializeButtonListeners();
     }
 
+    /**
+     * A gomb szövegének típusát állítjuk be, illetve azt, hogy milyen legyen a gomb kinézete.
+     */
     private void setButtonFont(){
         try{
             setFont(Font.loadFont(new FileInputStream(FONT_PATH), 23));
@@ -29,12 +36,18 @@ public class HeroesOfMightButton extends Button{
         }
     }
 
+    /**
+     * A gomb lenyomásának stílusa ezen metóduson belül játszódik le.
+     */
     private void setButtonPressedStyle(){
         setStyle(BUTTON_PRESSED_STYLE);
         setPrefHeight(45);
         setLayoutY(getLayoutY() + 4); // the pressed button image height is 4 pixels smaller than the released one
     }
 
+    /**
+     * A gomb eleresztésének stílusa.
+     */
     private void setButtonReleasedStyle(){
         setStyle(BUTTON_FREE_STYLE);
         setPrefHeight(49);
@@ -42,6 +55,10 @@ public class HeroesOfMightButton extends Button{
 
     }
 
+    /**
+     * Listeners a gomb(ok)nak.
+     * Lenyomás, elengedés. (egy shadow effect).
+     */
     private void initializeButtonListeners(){
 
 

@@ -1,6 +1,10 @@
 package main.kotprog;
 
-import javafx.scene.control.Label;
+/**
+ * Globális változókat tartalmaz az osztály, melyeket felhasználok bizonyos
+ * számításokhoz, illetve lekezelésekhez.
+ */
+
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 

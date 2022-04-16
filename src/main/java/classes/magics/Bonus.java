@@ -1,5 +1,11 @@
 package classes.magics;
 
+/**
+ * Ez az osztály a Bonus varázslat típusát reprezentálja.
+ * A Magics osztályból örököl.
+ * Nincsen különb dolga, az értékeink megfelelően reprezenetatív.
+ */
+
 public class Bonus extends Magic{
     private final int ar;
     private final int mannakoltseg;

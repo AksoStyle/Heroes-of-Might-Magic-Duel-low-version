@@ -1,4 +1,27 @@
 package view;
+/**
+ * Pár szó a kódolásban:
+ * Most először használtam JavaFx-et, előtte még sosem.
+ * Az időm nagy része inkább a kutatásra ment el, állandó Yotubue tutorialok nézegetése,
+ * illetve StackoverFlow olvasása, hogy megérthessem, mi hogyan funkcionál.
+ *
+ * Maga a Java nyelv sem volt túl ismert előtte, mert inkább használtam más nyelveket.
+ * A kód kinézete, rendezetlensége önmagáért beszél, ez volt életem első nagy projektja, amelynek
+ * érdekében hetekig készültem kora reggeltől késő hajnalig alvás nélkül.
+ *
+ * A kód felkerült Githubra és privát repositoryba, amint már teljes egészében használható lesz,
+ * s minden funkció megtalálható lesz benne, akkor fogom publikusan közzétenni.
+ *
+ * A kód futtatásának érdekében az Application class-t kell futtatni.
+ *
+ *
+ * Ez az osztály tartalmaz gyakorlatilag mindent a játék felépítésével kapcsolatban.
+ * Ebbe az osztályba lett importálva minden különböző osztály, ami a játékban szerepel.
+ * A játék logikájának megvalósítását tartalmazza nagy részben.
+ * A teljes Front-end itt található ezen osztályon belül.
+ *
+ * @author Faragó Ákos - TTIK - Mérnökinformatika - kötelező program
+ */
 
 import classes.Enemy;
 import classes.Hero;
@@ -173,6 +196,10 @@ public class ViewManager {
         mainPane.getChildren().add(button);
     }
 
+    /**
+     * Gombok létrehozására alkalmas metódusé.
+     * Jelen esetben négy féle gomb jön létre a menüben.
+     */
     private void createButton() {
         createStartButton();
         createModeButton();
@@ -230,7 +257,11 @@ public class ViewManager {
 
 
                         //enemy unitok
-
+/**
+ * Ellenséges egységek random elhelyezése a térképen. Abban az esetben,
+ * ha az ellenséges egység x-y koordinátája megegyezik egy másik egységével, újat generál, s ha már nem,
+ * akkor helyezi el az egységet a térképen.
+ */
                         System.out.println(randomenemy);
 
                         for (int i = 0; i < randomenemy.enemyUnits.size(); i++) {
@@ -247,25 +278,15 @@ public class ViewManager {
                         }
 
 
-                        /*
-                        if(specButtons.size() == 0) {
-                            HeroesOfMightButton startgamebutton = new HeroesOfMightButton("Start!");
-                            startgamebutton.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    game.StartGame();
-                                }
-                            });
-                        }
-
-                         */
-
                         // save menu
                         Scene menu = Globals.primaryStage.getScene();
                         ;
 
                         // save menu end
                         // bg image
+                        /**
+                         * Háttér kép
+                         */
                         Image backgroundImage = new Image("grass.png", true);
                         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
                         root3.setBackground(new Background(background));
@@ -276,7 +297,9 @@ public class ViewManager {
                         hbox.setBackground(new Background(background));
 
 
-                        // grid for the map
+                        /**
+                         * A térkép létrehozása 12*10 cellából.
+                         */
                         int rows = 10;
 
                         int columns = 12;
@@ -319,6 +342,10 @@ public class ViewManager {
                         Units.setLayoutY(0);
                         Units.setFont(new Font("Cardinal", 30));
                         root3.getChildren().add(Units);
+                        /**
+                         * Ha vásároltunk Földművest, abban az esetben megjelenik egy gomb a játék elején "F" betűvel.
+                         * A gombra kattintva elhelyezhetjük a pálya bal oldalán (első kettős cellában) az egységet.
+                         */
                         if (foldmuvesAmount != 0) {
                             SpecButton fmb = new SpecButton("F");
                             specButtons.add(fmb);
@@ -377,6 +404,10 @@ public class ViewManager {
 
 
                         }
+                        /**
+                         * Ha vásároltunk Ijászt, abban az esetben megjelenik egy gomb a játék elején "I" betűvel.
+                         * A gombra kattintva elhelyezhetjük a pálya bal oldalán (első kettős cellában) az egységet.
+                         */
                         if (ijaszAmount != 0) {
                             SpecButton ijb = new SpecButton("I");
                             specButtons.add(ijb);
@@ -434,6 +465,10 @@ public class ViewManager {
                                 }
                             });
                         }
+                        /**
+                         * Ha vásároltunk Griffet, abban az esetben megjelenik egy gomb a játék elején "G" betűvel.
+                         * A gombra kattintva elhelyezhetjük a pálya bal oldalán (első kettős cellában) az egységet.
+                         */
                         if (griffAmount != 0) {
                             SpecButton gb = new SpecButton("G");
                             specButtons.add(gb);
@@ -490,6 +525,11 @@ public class ViewManager {
                                 }
                             });
                         }
+
+                        /**
+                         * Ha vásároltunk cicát, abban az esetben megjelenik egy gomb a játék elején "C" betűvel.
+                         * A gombra kattintva elhelyezhetjük a pálya bal oldalán (első kettős cellában) az egységet.
+                         */
                         if (cicaAmount != 0) {
                             SpecButton cb = new SpecButton("C");
                             specButtons.add(cb);
@@ -546,6 +586,11 @@ public class ViewManager {
                                 }
                             });
                         }
+
+                        /**
+                         * Ha vásároltunk Páncéloscicát, abban az esetben megjelenik egy gomb a játék elején "P" betűvel.
+                         * A gombra kattintva elhelyezhetjük a pálya bal oldalán (első kettős cellában) az egységet.
+                         */
                         if (armourdercicaamount != 0) {
                             SpecButton acb = new SpecButton("P");
                             specButtons.add(acb);
@@ -621,6 +666,11 @@ public class ViewManager {
                         Magics.setFont(new Font("Cardinal", 30));
                         root3.getChildren().add(Magics);
                         int MagLayy = 400;
+
+                        /**
+                         * A gombra kattintva tudunk Tűzlabda Villámcsapás varázslatot használni, melynek következtében egy ellenséges karaktert kiválasztva az megsebződik 20* hős varázserővel.
+                         * Ha nincs elég mana, kilép az Actionből.
+                         */
                         if (villamcsapasamount != 0) {
                             VillamcsapasButton.setVisible(false);
                             VillamcsapasAmount.setVisible(false);
@@ -681,6 +731,11 @@ public class ViewManager {
 
                             root3.getChildren().addAll(VillamcsapasButton, VillamcsapasAmount);
                         }
+                        /**
+                         * A gombra kattintva tudunk Tűzlabda varázslatot használni, mellyel egy koordinátára kattintva egy tűzlabdát dobunk egy 3x3-as koordinátára. A koordinátán belül sebződik az ellenfél
+                         * Ha nincs elég mana, kilép az Actionből.
+                         */
+
                         if (tuzlabdaamount != 0) {
                             TuzlabdaButton.setVisible(false);
                             TuzlabdaAmount.setVisible(false);
@@ -773,6 +828,11 @@ public class ViewManager {
 
                             root3.getChildren().addAll(TuzlabdaButton, TuzlabdaAmount);
                         }
+                        /**
+                         * A gombra kattintva tudunk Feltámasztás varázslatot végezni, melynek következében egy saját egységre kattintva megnöveljük annak életerejét 50*a hős varázserejének értékével.
+                         * Ha az életereje nagyobb lesz, mint az egység maximum életereje, akkor a maximum életerőt kapja meg.
+                         * Ha nincs elég mana, kilép az Actionből.
+                         */
                         if (feltamasztasamount != 0) {
                             FeltamasztasButton.setVisible(false);
                             FeltamadasAmount.setVisible(false);
@@ -825,6 +885,11 @@ public class ViewManager {
                             });
                             root3.getChildren().addAll(FeltamasztasButton, FeltamadasAmount);
                         }
+                        /**
+                         * A gombra kattintva tudunk Bonus varázslatot használni, melynek következtében a hős minden tulajdonsága kettővel nő.
+                         * Ha már elérte a 9 vagy 10-et (mely a mximum), akkor nem tudjuk használni ezt a varázslatot.
+                         * Ha nincs elég mana, kilép az Actionből.
+                         */
                         if (bonusamount != 0) {
                             BonusButton.setVisible(false);
                             BonusAmount.setVisible(false);
@@ -881,6 +946,9 @@ public class ViewManager {
                             });
                             root3.getChildren().addAll(BonusButton, BonusAmount);
                         }
+                        /**
+                         * A gombra kattintva tudunk DoubleHeal varázslatot használni, ha van megfelelő mennyiségű manánk. A DoubleHeal következtében minden játékos életereje kétszeresére nő.
+                         */
                         if (doublehealamount != 0) {
                             DoubleHealButton.setVisible(false);
                             DoubleHealAmount.setVisible(false);
@@ -932,6 +1000,9 @@ public class ViewManager {
                 GoldAmount.setLayoutY(100);
                 GoldAmount.setFont(new Font("Cardinal", 25));
                 //Specifications of the Hero
+                /**
+                 * A gombra kattintva tudunk venni Támadás szintet. Egyszerre csak egyet, s az ára növekszik mnindig 10%-val.
+                 */
                 int Labely = 620;
                 Label TamadasLabel = new Label("Támadás:");
                 TamadasLabel.setLayoutX(300);
@@ -962,7 +1033,9 @@ public class ViewManager {
                     }
                 });
                 //Tamadas End ---------------->
-
+/**
+ * A gombra kattintva tudunk venni Védekezés szintet. Egyszerre csak egyet, s az ára növekszik mnindig 10%-val.
+ */
                 Label VedekezesLabel = new Label("Védekezés:");
                 VedekezesLabel.setLayoutX(450);
                 VedekezesLabel.setLayoutY(Labely);
@@ -989,7 +1062,9 @@ public class ViewManager {
                     }
                 });
                 //Vedekezes End ----------------->
-
+/**
+ * A gombra kattintva tudunk venni Varázserő szintet. Egyszerre csak egyet, s az ára növekszik mnindig 10%-val.
+ */
                 Label VarazseroLabel = new Label("Varázserő:");
                 VarazseroLabel.setLayoutX(600);
                 VarazseroLabel.setLayoutY(Labely);
@@ -1016,7 +1091,9 @@ public class ViewManager {
                     }
                 });
                 //Varazsero End ---------------------------->
-
+/**
+ * A gombra kattintva tudunk venni Tudás szintet. Egyszerre csak egyet, s az ára növekszik mnindig 10%-val.
+ */
                 Label TudasLabel = new Label("Tudás:");
                 TudasLabel.setLayoutX(750);
                 TudasLabel.setLayoutY(Labely);
@@ -1045,7 +1122,9 @@ public class ViewManager {
                     }
                 });
                 //Tudas End --------------------------->
-
+/**
+ * A gombra kattintva tudunk venni Morál szintet. Egyszerre csak egyet, s az ára növekszik mnindig 10%-val.
+ */
                 Label MoralLabel = new Label("Morál:");
                 MoralLabel.setLayoutX(900);
                 MoralLabel.setLayoutY(Labely);
@@ -1074,7 +1153,9 @@ public class ViewManager {
                     }
                 });
                 // Moral End --------------------------->
-
+                /**
+                 * A gombra kattintva tudunk venni Szerencse szintet. Egyszerre csak egyet, s az ára növekszik mnindig 10%-val.
+                 */
 
                 Label SzerencseLabel = new Label("Szerencse:");
                 SzerencseLabel.setLayoutX(1050);
@@ -1319,6 +1400,9 @@ public class ViewManager {
 
                 //Buttons for the units ---------------------------------------------------------->
                 //Földműves gomb
+                /**
+                 * A gombra kattintva vehetünk Földművest.
+                 */
                 HeroesOfMightButton FoldmuvesButton = new HeroesOfMightButton("Földm.");
                 Tooltip FmTp = new Tooltip();
                 FmTp.setText("Sebzés: 1-1, Életerő: 3, Sebesség: 4, Kezdeményezés: 8, Sepciális képesség: nincs");
@@ -1348,6 +1432,9 @@ public class ViewManager {
                 FoldmuvesButton.setLayoutY(150);
 
                 //Ijász gomb
+                /**
+                 * A gombra kattintva vehetünk Íjászt.
+                 */
                 HeroesOfMightButton IjaszButton = new HeroesOfMightButton("Íjász");
                 Tooltip ijtp = new Tooltip();
                 ijtp.setText("Sebzés: 2-4, Életerő: 7, Sebesség: 4, Kezdeményezés: 9, Sepciális képesség: lövés");
@@ -1377,6 +1464,9 @@ public class ViewManager {
                 IjaszButton.setLayoutY(250);
 
                 //Griff gomb
+                /**
+                 * A gombra kattintva vehetünk Griffet.
+                 */
                 HeroesOfMightButton SarkanyButton = new HeroesOfMightButton("Griff");
                 Tooltip grtp = new Tooltip();
                 grtp.setText("Sebzés: 5-10, Életerő: 30, Sebesség: 7, Kezdeményezés: 15, Sepciális képesség: végtelen visszatámadás");
@@ -1405,6 +1495,9 @@ public class ViewManager {
                 SarkanyButton.setLayoutY(350);
 
                 //Cica gomb
+                /**
+                 * A gombra kattintva vehetünk cicát.
+                 */
                 HeroesOfMightButton CicaButton = new HeroesOfMightButton("Cica");
                 Tooltip cicatp = new Tooltip();
                 cicatp.setText("Sebzés: 10-20, Életerő: 50, Sebesség: 10, Kezdeményezés: 20, Sepciális képesség: nyávog");
@@ -1433,6 +1526,9 @@ public class ViewManager {
                 CicaButton.setLayoutY(450);
 
                 //Páncéloscica gomb
+                /**
+                 * A gombra kattintva vehetünk Páncélos cicát.
+                 */
                 HeroesOfMightButton ArmouredCatButton = new HeroesOfMightButton("P. Cica");
                 Tooltip arcicatp = new Tooltip();
                 arcicatp.setText("Sebzés: 50-100, Életerő: 100, Sebesség: 3, Kezdeményezés: 50, Sepciális képesség: nyávog, csak hangosabban");
@@ -1463,6 +1559,9 @@ public class ViewManager {
 
                 //Varázserő Gombok --------------------------------------------->
                 //Tűzlabda gomb
+                /**
+                 * A gombar kattintva vásárolhatunk Tűzlabda varázslatot.
+                 */
                 HeroesOfMightButton TuzlabdaButton = new HeroesOfMightButton("TUzL.");
                 Tooltip tuzlabdatp = new Tooltip();
                 tuzlabdatp.setText("Egy kiválasztott mező körüli 3x3-as területen lévő\n" +
@@ -1486,7 +1585,9 @@ public class ViewManager {
                 TuzlabdaButton.setLayoutX(800);
                 TuzlabdaButton.setLayoutY(150);
 
-                //VillamCsapas gomb
+                /**
+                 * A gombar kattintva vásárolhatunk villámcsapás varázslatot.
+                 */
                 HeroesOfMightButton VillamcsapasButton = new HeroesOfMightButton("Villám");
 
                 Tooltip villamtp = new Tooltip();
@@ -1509,7 +1610,9 @@ public class ViewManager {
                 VillamcsapasButton.setLayoutX(800);
                 VillamcsapasButton.setLayoutY(250);
 
-                //Feltamasztas gomb
+                /**
+                 * A gombra kattintva vásárolhatunk feltámasztás varázslatot, felette maradva a kurzorral kiírja, mit is tehetünk a varázslattal.
+                 */
                 HeroesOfMightButton FeltamasztasButton = new HeroesOfMightButton("Feltam.");
                 Tooltip felttp = new Tooltip();
                 felttp.setText("Egy kiválasztott saját egység feltámasztása.\n" +
@@ -1531,7 +1634,7 @@ public class ViewManager {
                 FeltamasztasButton.setLayoutX(800);
                 FeltamasztasButton.setLayoutY(350);
 
-                //Megnövel minden traitet, Bonus gomb
+
                 HeroesOfMightButton TraitBonusButton = new HeroesOfMightButton("Bonus");
                 Tooltip bonustp = new Tooltip();
                 bonustp.setText("Megnövel minden traitet 2-vel.");
@@ -1584,11 +1687,16 @@ public class ViewManager {
                 Globals.primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
             }
 
-            // ide gechi a jatekot
+
         });
         addMenuButton(startButton);
     }
 
+    /**
+     * Ez a metódus létrehozza a MODE menüt, melyben ki tudjuk választani, hogy milyen nehézségi szinten szeretnénk játszani.
+     * A megfelelő gombra kattintva pedig beállítódik a játék nehézségi szintje.
+     *
+     */
     private void createModeButton() {
         HeroesOfMightButton ModeButton = new HeroesOfMightButton("MODE");
         ModeButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1651,6 +1759,10 @@ public class ViewManager {
         addMenuButton(ModeButton);
     }
 
+    /**
+     * Ezen metódus elkészíti a HOW TO gombot, mely létrehoz egy új Scene-t, melyen látható a játék leírása/útmutatója.
+     *
+     */
     private void createHowToButton() {
         HeroesOfMightButton HowToButton = new HeroesOfMightButton("HOW TO");
         HowToButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1670,6 +1782,9 @@ public class ViewManager {
         addMenuButton(HowToButton);
     }
 
+    /**
+     * Ez a metódus egy kilépés gombot generál. Annak lenyomásával bezárja a játékot.
+     */
     private void createExitButton() {
         HeroesOfMightButton ExitButton = new HeroesOfMightButton("EXIT");
         ExitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1681,12 +1796,18 @@ public class ViewManager {
         addMenuButton(ExitButton);
     }
 
+    /**
+     * Ezen metódus a háttér beállítását végzi.
+     */
     private void createBackground() {
         Image backgroundImage = new Image("grass.png", true);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         mainPane.setBackground(new Background(background));
     }
 
+    /**
+     * Ezen metódus segítségével állítjuk be, hogy milyen szinten vagyunk, s a szerint állít be egy képet a főmenüben, illetve állítja be az arany értéket, amelyet használhatunk nehézségi szint serint a játékban.
+     */
     private void setDifficultyBackground() {
         Image easyImage = new Image("easy.png");
         Image mediumImage = new Image("medium.png");
@@ -1710,6 +1831,10 @@ public class ViewManager {
         }
     }
 
+    /**
+     * Ez a metódus létrehozza a fő menüben lévő címet.
+     * Paramétere nincs, visszatérési értéke sincs.
+     */
     private void CreateMainLabelText() {
         Label text = new Label("HEROES OF MIGHT");
         text.setLayoutX(350);
@@ -1719,22 +1844,25 @@ public class ViewManager {
         mainPane.getChildren().add(text);
     }
 
-
+    /**
+     * Ez a metódus egy ellenőrzési szempont, mellyel megvizsgáljuk ,hogy a megadott cella tartalmaz-e egy megadott objektumot, vagy sem. Ha tartalmaz bizonyos objektumot, akkor igazzal térünk vissza, ellenkező esetben hamissal.
+     * @param rowIndex sor index
+     * @param columnIndex oszlop index
+     * @return
+     */
     public boolean getNodeByRowColumnIndex(int rowIndex, int columnIndex) {
-
         ObservableList<Node> observableList = game.grid.getChildren();
         for (Node nd : observableList) {
 
             if (GridPane.getRowIndex(nd) == rowIndex && GridPane.getColumnIndex(nd) == columnIndex && GridPane.getRowIndex(nd) != null && GridPane.getColumnIndex(nd) != null) {
                 System.out.println(nd.toString());
                 return true;
-
             }
         }
         return false;
     }
 
-
+    /*
     public ImageView getNodeByRowColumnIndex2(int rowIndex, int columnIndex) {
 
         ObservableList<Node> observableList = game.grid.getChildren();
@@ -1748,13 +1876,24 @@ public class ViewManager {
         return null;
     }
 
+     */
 
+    /**
+     * Ez a metódus hozzáadja a megadott hős képét a megfelelő cellába.
+     *
+     * @param col oszlop
+     * @param row sor
+     * @param img hős kép
+     */
     public void addPictureToCell(int col, int row, ImageView img) {
         game.grid.add(img, col, row);
     }
 
 
-    // public boolean IsCharacterOnCell(int col, int row){
+    /**
+     * Ez a metódus tovább adja az előkészített egységeket, melyeket vásároltunk a hős osztályban lévő hősnek.     *
+     * @param hero egy Hero osztályt kell megadnunk, hogy melyik hősnek adunk hozzá egységet.
+     */
     public void addherotoherounits(Hero hero) {
         if (Integer.parseInt(FoldmuvesAmount.getText()) > 0) {
             if (Integer.parseInt(FoldmuvesAmount.getText()) > 0) {
@@ -1797,34 +1936,33 @@ public class ViewManager {
         }
     }
 
+    /**
+     * Ez a metódus ellenőrzi, hogy a játékos készen áll-e a játékra. Amint az összes egységet elhelyezte, abban a pillanatban elkezdődik a játék, s egy saját egységre kattintva
+     * már lehet is mozdítani az egységet, megjelennek a megvásárolt varázserők, melyeket fel lehet használni.
+     * Nincs paramétere, sem visszatérési értéke.
+     */
     public void IsPlayerReadyToStart() {
         if (specButtons.size() == 0) {
             Units.setVisible(false);
             Magics.setVisible(true);
             VillamcsapasAmount.setVisible(true);
             VillamcsapasButton.setVisible(true);
-
-
             TuzlabdaAmount.setVisible(true);
             TuzlabdaButton.setVisible(true);
-
             FeltamadasAmount.setVisible(true);
             FeltamasztasButton.setVisible(true);
-
             BonusButton.setVisible(true);
             BonusAmount.setVisible(true);
-
             DoubleHealButton.setVisible(true);
             DoubleHealAmount.setVisible(true);
-
             game.StartGame();
-
-
-
-
         }
     }
 
+    /**
+     * Ez a metódus ellenőrzi, hgoy a játékos megnyerte-e már a játékot, s ha igen, kiírja a pálya közepére, hogy "YOU WIN!", majd 5 másodperc múlva bezárja magát.
+     * Nincs paramétere, sem visszatérési értéke.
+     */
     public void DoesHeroWin(){
         if(randomenemy.enemyUnits.size() == 0){
             YouWon.setText("YOU WON!");
@@ -1839,6 +1977,11 @@ public class ViewManager {
         }
     }
 
+    /**
+     * Ez a metódus ellenőrzi, hogy az ellenséges egységben halt-e meg valaki, s ha igen, akkor az ellenfél listájából kiveszi a megfelelő egységet, illetve a pályáról leveszi az egységnek a képét.
+     *  Nincs paramétere, sem visszatérési értéke.
+     *
+     */
     public void CheckenemyUnits(){
         for(Unit un : randomenemy.enemyUnits){
             if(un.getHealth() <= 0){

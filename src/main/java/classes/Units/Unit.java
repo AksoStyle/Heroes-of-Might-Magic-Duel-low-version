@@ -1,4 +1,8 @@
 package classes.Units;
+/**
+ * Ez a Unit osztály. Minden karakter, mely megvásárolható, s használható játék során
+ * innen örökli a tulajdonságait.
+ */
 
 import javafx.scene.image.ImageView;
 
@@ -109,7 +113,7 @@ public abstract class Unit {
     public String getSpeciality() {
         return Speciality;
     }
-
+    /*
     public boolean IsLiving(Unit object){
         if (object.Health <= 0){
             return false;
@@ -132,6 +136,8 @@ public abstract class Unit {
             DamageUnit(Hero, Enemy);
         }
     }
+
+     */
 
 
 

@@ -1,18 +1,21 @@
 package main.kotprog;
+/**
+ * A game osztály felel tulajdonképpen a karakter mozgaztásáért, támadásáért, counter-támadásért.
+ * Tulajdonképpen a játék elindítása is itt van, mivel addig nem lehet egységet mozgatni, míg nincs lehelyezve az
+ * összes egység, melyet vásároltunk.
+ * Ezek közül csak a mozgatás van megvalósítva.
+ *
+ */
 
 import classes.Enemy;
 import classes.Hero;
 import classes.Units.Unit;
-import classes.magics.Magic;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-
-import java.util.ArrayList;
 
 public class Game {
 private Hero hos;

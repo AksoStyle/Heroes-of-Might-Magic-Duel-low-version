@@ -1,4 +1,8 @@
 package main.kotprog;
+/**
+ * A játék indításáért felelő osztály. A JavaFx magának generált osztály.
+ * @author Faragó Ákos.
+ */
 
 import javafx.stage.Stage;
 import javafx.scene.image.Image;

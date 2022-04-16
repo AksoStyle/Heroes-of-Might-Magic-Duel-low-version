@@ -1,8 +1,12 @@
 package classes;
+/**
+ * Az enemy osztály reprezentálja az ellenséges egységet.
+ * Az ellenséges osztály a tulajdonságait saját magának generálja le,
+ * hogy miből hány egységet vinne a pályára, illetve a tulajdonságait is.
+ */
 
 import classes.Units.*;
 import main.kotprog.Globals;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -87,6 +91,13 @@ public class Enemy {
         return foldmuvesamount;
     }
 
+    /**
+     * A Földműves vásárlása setter metódusban van megoldva,
+     * hogy randomizálva (Az arany értékének megfelelően)
+     * vásároljon megfelelő mennyiségű egységet.
+     * majd ez jerül véletlenszerűen a pályára.
+     * * @param foldmuvesamount a kezdő értéket várja
+     */
     public void setFoldmuvesamount(int foldmuvesamount) {
         int tmp = this.goldAmount;
         int max = tmp / Globals.priceoffoldmuvesenemy;
@@ -106,7 +117,13 @@ public class Enemy {
     public int getIjaszamount() {
         return ijaszamount;
     }
-
+    /**
+     * A Íjász vásárlása setter metódusban van megoldva,
+     * hogy randomizálva (Az arany értékének megfelelően)
+     * vásároljon megfelelő mennyiségű egységet.
+     * majd ez jerül véletlenszerűen a pályára.
+     * * @param ijaszamount a kezdő értéket várja
+     */
     public void setIjaszamount(int ijaszamount) {
         int tmp = this.goldAmount;
         int max = tmp / Globals.priceofijaszenemy;
@@ -127,6 +144,13 @@ public class Enemy {
         return griffamount;
     }
 
+    /**
+     * A Íjász vásárlása setter metódusban van megoldva,
+     * hogy randomizálva (Az arany értékének megfelelően)
+     * vásároljon megfelelő mennyiségű egységet.
+     * majd ez jerül véletlenszerűen a pályára.
+     * * @param ijaszamount a kezdő értéket várja
+     */
     public void setGriffamount(int griffamount) {
         int tmp = this.goldAmount;
         int max = tmp / Globals.priceofgriffenemy;
@@ -147,6 +171,13 @@ public class Enemy {
         return cicaamount;
     }
 
+    /**
+     * A Cica vásárlása setter metódusban van megoldva,
+     * hogy randomizálva (Az arany értékének megfelelően)
+     * vásároljon megfelelő mennyiségű egységet.
+     * majd ez jerül véletlenszerűen a pályára.
+     * * @param cicaamount a kezdő értéket várja
+     */
     public void setCicaamount(int cicaamount) {
         int tmp = this.goldAmount;
         int max = tmp / Globals.priceofcicaenemy;
@@ -168,6 +199,13 @@ public class Enemy {
     public int getPanceloscicaamount() {
         return panceloscicaamount;
     }
+    /**
+     * A PáncélosCica vásárlása setter metódusban van megoldva,
+     * hogy randomizálva (Az arany értékének megfelelően)
+     * vásároljon megfelelő mennyiségű egységet.
+     * majd ez jerül véletlenszerűen a pályára.
+     * * @param panceloscicaamount a kezdő értéket várja
+     */
 
     public void setPanceloscicaamount(int panceloscicaamount) {
         int tmp = this.goldAmount;
@@ -192,6 +230,12 @@ public class Enemy {
         return tamadas;
     }
 
+    /**
+     * A Támadás beállítását a setter metódus végzi véletlenszerű számmal.
+     * Annyit vásárol, hogy negatív érétkbe ne ütközzön (mivel bizonyos mennyiségű aranyat használ fel.)
+     * Maximum értékének megfelelően (10).
+     * @param tamadas kezdő értéket vár.
+     */
     public void setTamadas(int tamadas) {
         int tmp = this.goldAmount;
         for (int i = 0; i < rnd.nextInt(10)+1;i++){
@@ -211,7 +255,12 @@ public class Enemy {
     public int getVedekezes() {
         return vedekezes;
     }
-
+    /**
+     * A Védekezés beállítását a setter metódus végzi véletlenszerű számmal.
+     * Annyit vásárol, hogy negatív érétkbe ne ütközzön (mivel bizonyos mennyiségű aranyat használ fel.)
+     * Maximum értékének megfelelően (10).
+     * @param vedekezes kezdő értéket vár.
+     */
     public void setVedekezes(int vedekezes) {
         int tmp = this.goldAmount;
         for (int i = 0; i < rnd.nextInt(10)+1;i++){
@@ -231,7 +280,12 @@ public class Enemy {
     public int getVarazsero() {
         return varazsero;
     }
-
+    /**
+     * A Varászserő beállítását a setter metódus végzi véletlenszerű számmal.
+     * Annyit vásárol, hogy negatív érétkbe ne ütközzön (mivel bizonyos mennyiségű aranyat használ fel.)
+     * Maximum értékének megfelelően (10).
+     * @param varazsero kezdő értéket vár.
+     */
     public void setVarazsero(int varazsero) {
         int tmp = this.goldAmount;
         for (int i = 0; i < rnd.nextInt(10)+1;i++){
@@ -251,7 +305,12 @@ public class Enemy {
     public int getTudas() {
         return tudas;
     }
-
+    /**
+     * A Tudás beállítását a setter metódus végzi véletlenszerű számmal.
+     * Annyit vásárol, hogy negatív érétkbe ne ütközzön (mivel bizonyos mennyiségű aranyat használ fel.)
+     * Maximum értékének megfelelően (10).
+     * @param tudas kezdő értéket vár.
+     */
     public void setTudas(int tudas) {
         int tmp = this.goldAmount;
         for (int i = 0; i < rnd.nextInt(10)+1;i++){
@@ -271,7 +330,12 @@ public class Enemy {
     public int getMoral() {
         return moral;
     }
-
+    /**
+     * A Morál beállítását a setter metódus végzi véletlenszerű számmal.
+     * Annyit vásárol, hogy negatív érétkbe ne ütközzön (mivel bizonyos mennyiségű aranyat használ fel.)
+     * Maximum értékének megfelelően (10).
+     * @param moral kezdő értéket vár.
+     */
     public void setMoral(int moral) {
         int tmp = this.goldAmount;
         for (int i = 0; i < rnd.nextInt(10)+1;i++){
@@ -291,7 +355,12 @@ public class Enemy {
     public int getSzerencse() {
         return szerencse;
     }
-
+    /**
+     * A Szerencse beállítását a setter metódus végzi véletlenszerű számmal.
+     * Annyit vásárol, hogy negatív érétkbe ne ütközzön (mivel bizonyos mennyiségű aranyat használ fel.)
+     * Maximum értékének megfelelően (10).
+     * @param szerencse kezdő értéket vár.
+     */
     public void setSzerencse(int szerencse) {
         int tmp = this.goldAmount;
         for (int i = 0; i < rnd.nextInt(10)+1;i++){

@@ -5,6 +5,11 @@ import javafx.scene.image.ImageView;
 
 import java.util.Random;
 
+/**
+ * Ez az osztály a Cica osztályt reprezentálja, A unit osztályból örököl.
+ * Az osztálynak van: életereje, sebzése, sebessége, kezdeményezése, specialitása, maximum élete illetve egy képe, mely
+ * reprezentálja a unitet.
+ */
 public class Cica extends Unit{
 
     public final String name = "Cica";

@@ -1,4 +1,15 @@
 package classes;
+/**
+ * A Hero osztály a hőst, az-az minden esetben a játékost reprezentálja.
+ * Amennyi tulajdonságot vesz, azon tulajdonságokat fogja tovább vinni a játékos a
+ * jétékban.
+ * Tulajdonságok: Támadás, Védekezés, Varázserő, Tudás, Morál, Szerencse, Mana
+ * Varázslatok: Villámcsapás, Tűzlabda, Feltámasztás, Bonus, DoubleHeal.
+ * Egy Hero osztály példányosítása: Hero hero = new Hero(100, 100, 100, 100, 100, 100, 100);
+ *
+ *
+ * @author Faragó Ákos
+ *  */
 
 import classes.Units.Unit;
 
