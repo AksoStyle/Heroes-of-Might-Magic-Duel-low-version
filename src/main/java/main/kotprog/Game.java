@@ -10,12 +10,17 @@ package main.kotprog;
 import classes.Enemy;
 import classes.Hero;
 import classes.Units.Unit;
+import javafx.animation.PauseTransition;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
+import view.ViewManager;
 
 public class Game {
 private Hero hos;
@@ -107,9 +112,40 @@ public boolean isWin = false;
                         int tmpy = (int) Math.floor((mouseEvent.getY() - 125) / 55);
                         int tmpx = (int) Math.floor(mouseEvent.getX() / 55);
                         System.out.println(tmpx + " : " + tmpy);
-                        //if (getNodeByRowColumnIndex(tmpy, tmpx) != null) {
+                        for(Unit un : enemy.enemyUnits) {
+                            if (getNodeByRowColumnIndex(tmpy, tmpx) == un.getImage() &&
+                                    (selectedunit.x_pos == tmpx - 1 && selectedunit.y_pos == tmpy) ||
+                                    (selectedunit.x_pos == tmpx + 1 && selectedunit.y_pos == tmpy) ||
+                                    (selectedunit.x_pos == tmpx     && selectedunit.y_pos == tmpy - 1) ||
+                                    (selectedunit.x_pos == tmpx     && selectedunit.y_pos == tmpy + 1 ||
+                                    (selectedunit.x_pos == tmpx - 1 && selectedunit.y_pos == tmpy - 1) ||
+                                    (selectedunit.x_pos == tmpx + 1 && selectedunit.y_pos == tmpy + 1) ||
+                                    (selectedunit.x_pos == tmpx - 1 && selectedunit.y_pos == tmpy + 1) ||
+                                    (selectedunit.x_pos == tmpx + 1 && selectedunit.y_pos == tmpy - 1))) {
+                                un.setHealth(un.getHealth() - selectedunit.getDamage());
+                                System.out.println("A " + un.getName() + " életereje: " + un.getHealth()  +", ennyi sebzést szenvedett el: " + selectedunit.getDamage());
+                                if (un.getHealth() <= 0) {
+                                    System.out.println("A " + un.getName() + " meghalt");
+                                    grid.getChildren().remove(un.getImage());
+                                    enemy.enemyUnits.remove(un);
+                                    flagForSelectUnit = true;
+                                    break;
+                                }
 
-                        //}
+                            }
+                            if (selectedunit.getName().equals("Ijász") && getNodeByRowColumnIndex(tmpy, tmpx) == un.getImage()) {
+                                un.setHealth(un.getHealth() - selectedunit.getDamage());
+                                System.out.println("A " + un.getName() + " életereje: " + un.getHealth()  +", ennyi sebzést szenvedett el: " + selectedunit.getDamage());
+                                if (un.getHealth() <= 0) {
+                                    System.out.println("A " + un.getName() + " meghalt");
+                                    grid.getChildren().remove(un.getImage());
+                                    enemy.enemyUnits.remove(un);
+                                    flagForSelectUnit = true;
+                                    break;
+                                }
+                            }
+
+                        }
 
 
                         if (getNodeByRowColumnIndex(tmpy, tmpx) == null) {
@@ -151,4 +187,8 @@ public boolean isWin = false;
     public Hero getHos() {
         return hos;
     }
+
+
 }
+
+

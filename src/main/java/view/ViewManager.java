@@ -384,10 +384,7 @@ public class ViewManager {
                                                 addPictureToCell(foldmuves.x_pos, foldmuves.y_pos, foldmuves.getImage());
 
                                                 System.out.println("Földműves elhelyezve a " + foldmuves.x_pos + " : " + foldmuves.y_pos + " Koordinátára.");
-                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
-                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
-                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
-                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
+
                                                 fmb.setVisible(false);
                                                 specButtons.remove(fmb);
                                                 IsPlayerReadyToStart();
@@ -446,11 +443,7 @@ public class ViewManager {
                                                 addPictureToCell(ijasz.x_pos, ijasz.y_pos, ijasz.getImage());
 
                                                 System.out.println("Ijász elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
-                                                System.out.println("Földműves elhelyezve a " + foldmuves.x_pos + " : " + foldmuves.y_pos + " Koordinátára.");
-                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
-                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
-                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
-                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
+
                                                 ijb.setVisible(false);
                                                 specButtons.remove(ijb);
                                                 IsPlayerReadyToStart();
@@ -507,10 +500,7 @@ public class ViewManager {
                                                 addPictureToCell(griff.x_pos, griff.y_pos, griff.getImage());
 
                                                 System.out.println("Griff elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
-                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
-                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
-                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
-                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
+
                                                 gb.setVisible(false);
                                                 specButtons.remove(gb);
                                                 IsPlayerReadyToStart();
@@ -568,10 +558,7 @@ public class ViewManager {
                                                 addPictureToCell(cica.x_pos, cica.y_pos, cica.getImage());
 
                                                 System.out.println("Cica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
-                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
-                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
-                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
-                                                System.out.println("Páncéloscica pozíció jelenleg: " + panceloscica.x_pos + " : " + panceloscica.y_pos);
+
                                                 cb.setVisible(false);
                                                 specButtons.remove(cb);
                                                 IsPlayerReadyToStart();
@@ -628,10 +615,7 @@ public class ViewManager {
 
                                                 addPictureToCell(panceloscica.x_pos, panceloscica.y_pos, panceloscica.getImage());
                                                 System.out.println("PáncélosCica elhelyezve a " + tmpx + " : " + tmpy + " Koordinátára.");
-                                                System.out.println("Földműves pozíció jelenleg: " + foldmuves.x_pos + " : " + foldmuves.y_pos);
-                                                System.out.println("Ijász pozíció jelenleg: " + ijasz.x_pos + " : " + ijasz.y_pos);
-                                                System.out.println("Griff pozíció jelenleg: " + griff.x_pos + " : " + griff.y_pos);
-                                                System.out.println("Cica pozíció jelenleg: " + cica.x_pos + " : " + cica.y_pos);
+
                                                 acb.setVisible(false);
                                                 specButtons.remove(acb);
                                                 IsPlayerReadyToStart();
@@ -776,16 +760,6 @@ public class ViewManager {
                                             int balalsoatlo_y = tmpy + 1;
                                             int left_x = tmpx - 1;
                                             int left_y = tmpy;
-
-                                            System.out.println("Kiválasztott cella: " + tmpx + " : " + tmpy);
-                                            System.out.println("Balátló " + balatlo_x + " : " + balatlo_y);
-                                            System.out.println("Felső " + high_x + " : " + high_y);
-                                            System.out.println("Jobbátló " + jobbatlo_x + " : " + jobbatlo_y);
-                                            System.out.println("Jobb " + right_x + " : " + right_y);
-                                            System.out.println("Jobbalsó " + jobbalsoatlo_x + " : " + jobbalsoatlo_y);
-                                            System.out.println("Alsó " + bottom_x + " : " + bottom_y);
-                                            System.out.println("Balalsó " + balalsoatlo_x + " : " + balalsoatlo_y);
-                                            System.out.println("Bal " + left_x + " : " + left_y);
 
                                             for (Unit en : randomenemy.enemyUnits) {
                                                 if (
@@ -1769,12 +1743,45 @@ public class ViewManager {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Scene menu = Globals.primaryStage.getScene();
+                SpecButton backButton = new SpecButton("x");
+                backButton.setLayoutX(0);
+                backButton.setLayoutY(0);
+                backButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                    Globals.primaryStage.setScene(menu);
+                    }
+                });
                 Pane root = new Pane();
                 Image backgroundImage = new Image("grass.png", true);
                 root.setBackground(new Background(new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, null, null)));
-                Text text = new Text("random szöveg");
+                Text text = new Text("A játék főmenüjében 4 menüpont található. Play, Mode, How to illetve egy Exit. Mielőtt a Play gombra kattintunk,\n" +
+                                        "először a Mode menüt keressük meg, ahol kiválasztjuk, hogy milyen nehézségi szinten szeretnénk játszani. Ez be-\n" +
+                                        "-folyásolja, hogy mennyi aranyat tudunk felhasználni a játék során. Könnyű mód esetén 1300, közepes mód esetén \n" +
+                                        "1000, míg nehéz módon 700 aranyat tudunk felhasználni. Miután választottunk nehézségi szintet, a főmenüben meg-\n" +
+                                        "jelenik egy kép aszerint, milyen módban vagyunk. Ezután a Play gombra kattintva egy menübe érkezünk, ahol megte-\n" +
+                                        "-hetjük az alapvető vásárlásokat. Ezen menüpont alatt tudjuk kiválasztani, milyen egységből mennyit szeretnénk \n" +
+                                        "magunkkal vinni a csatába, milyen varázslatot szeretnénk alkalmazni a játék során, illetve növelhetjük a tulaj-\n" +
+                                        "-donság pontjainkat, melyeknek a játék során vannak befolyásaik bizonyos cselekedetekkel. (Melyről szó esik a kö-\n" +
+                                        "-telező program PDF-ben). Amint válaszotttunk már egy egységet is, akkor megjelenik a jobb felső sarokban egy start\n" +
+                                        " gomb, melyre kattintva egy új képernyőre érünk, ahol egy 12*10-es tábla helyezkedik el többnyire a tábla közepétől \n" +
+                                        " jobbra. Bal oldalt látható pár gomb, melyek reprezentálják, hogy milyen egységeket vettünk. F, mint Földműves, I,\n" +
+                                        " mint Íjász, G, mint Griff C, mint Cica illetve P, mint Páncéloscica. Amely gombra kattintunk, azt a karaktert helyez-\n" +
+                                        "-hetjük el a térképen, azonban a térkép csak a balt lévő első kettő oszlopába helyezhetünk egységet. Amint erre a képer-\n" +
+                                        "-nyőre értünk, megjelenik az ellefnél minden egysége, melyet magának választott ki a játék során. Miután minden egysé-\n" +
+                                        "-günket elhelyeztük a térképen, a játék elkezdődik. A konzolra kiíródik az ellenfél minden adata, hogyan vásárolt be\n" +
+                                        " magának. Minden esetben egy-egy utasítás sorozat kiíródik a konzolra, azonban ez nem befolyásolja a játékot. Egy \n" +
+                                        "saját egységre kattintás után egy másik mezőbe kattintva léphetünk egy megadott egységgel. Miután a játék elkezdődött,\n" +
+                                        " megjelennek a megvásárolt varázslatok gombok formájában:T, mint Tűzlabda, V, mint Villámcsapás, F, mint Feltámasztás, \n" +
+                                        "B, mint Bonus illetve D, mint DoubleHeal. " +
+                                        "\nA játékot meg lehet nyerni jelenleg, ha varázslatokat veszünk (pl Tűzlabdát, vagy Villámcsapást), és a varázserőt maximumra\n" +
+                                        "növeljük. Miután minden ellenséges egység meghalt, a játék kiírja, hogy YOU WIN, majd 5 másodperc után bezárja az\n" +
+                                        " ablakot. A játék még nem teljes, hiányosak benne funkciók." );
+                text.setLayoutX(100);
+                text.setLayoutY(100);
+                text.setFont(new Font(20));
                 root.getChildren().add(text);
-
+                root.getChildren().add(backButton);
                 Globals.primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
 
             }
@@ -1956,6 +1963,7 @@ public class ViewManager {
             DoubleHealButton.setVisible(true);
             DoubleHealAmount.setVisible(true);
             game.StartGame();
+            DoesHeroWin();
         }
     }
 
